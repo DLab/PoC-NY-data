@@ -1,0 +1,1 @@
+2020-11-03: suggestion from T. Villaseca, to drop 'county' column as 'fips' code is enough. This change will happen when we check for consistency in 'fips' codes
