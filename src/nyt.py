@@ -6,7 +6,9 @@ df = pd.read_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master
 
 print(df.columns.to_list())
 
-temp = df.loc[df['state'] == 'New York']
+temp = df.loc[df['state'] == 'New York'].copy()
+
+temp.drop(columns = 'state', inplace = True)
 
 temp['fips'].fillna(99999,inplace = True)
 
