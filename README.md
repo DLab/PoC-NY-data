@@ -5,7 +5,7 @@ This a proof of concept of the standardised data for the State of New York. Only
 
 Counties.
 
-**Note 1:** The City of New York is an aggregation of 5 counties: Bronx, Kings, New York, Queens, Richmond. They also correspond to city councils of: Bronx, Brooklyn, Manhattan, Queens and Staten Island.
+**Note 1:** The City of New York is an aggregation of 5 counties: Bronx, Kings, New York, Queens, Richmond. They also correspond to boroughs: Bronx, Brooklyn, Manhattan, Queens and Staten Island.
 
 **Note 2:** the fips code associated to the New York City is 99999. This is substituing the NaN code given in the source, as it is not a political unit.
 
