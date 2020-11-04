@@ -11,9 +11,19 @@ Counties.
 
 **Note 3:** Data for the state of New York starts on 2020-03-01
 
+**Note 4:** The file contains data up to the current day, but does not include it. The numbers in the `raw_epidemiology_NY_std.csv` file are the final counts at the end of each day and each row of data reports the cumulative number of coronavirus cases and deaths
+
 # Frequency: 
 
 Daily
+
+# Data definition by columns (NY data)
+
+- `Cases:` Total number of cases of Covid-19, confirmed cases plus probable cases. 
+- `Deaths:` Total number of deaths from Covid-19, confrimed cases plus probable cases. 
+- `fips:` County FIPS code
+- `county:` County name
+- `Date`: Date on which data was collected.
 
 # Source:
 
