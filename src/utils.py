@@ -21,16 +21,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
-import requests
-from unidecode import unidecode
 import pandas as pd
-import re
 
 """
 Generic utilities
 """
 
-def keyDates(df):
-    df = pd.DataFrame()
-    df['first_date'] = '2020-01-22'
+def counties(source):
+
+    filename = '../input/utilities/population_NY_2019_version' + source + '.csv'
+    county = pd.read_csv(filename)
+    county.drop(columns=['state', 'population'], inplace=True)
+
+    return county
 

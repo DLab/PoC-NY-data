@@ -4,6 +4,7 @@ import glob
 import datetime
 import re
 import requests
+import utils
 
 '''
 MIT License
@@ -31,9 +32,8 @@ SOFTWARE.
 
 class MineData:
 
-    def findingFiles(self):
+    def findingFiles(self,url):
 
-        url = 'https://api.github.com/repos/CSSEGISandData/COVID-19/contents/csse_covid_19_data/csse_covid_19_daily_reports'
         req = requests.get(url)
         if req.status_code == requests.codes.ok:
             df = pd.DataFrame(req.json())
@@ -43,22 +43,22 @@ class MineData:
             df.drop(todrop.index, inplace=True)
 
             self.dates = [item.replace('.csv', '') for item in df['name']]
+            self.downURL = df['download_url'].to_list()
         else:
             print('Content was not found.')
 
-    def readingData(self, inputDirectory):
+    def readingData(self, source):
 
-        self.county = pd.read_csv('../input/population_NY_2019.csv')
-
-        self.county.drop(columns = ['state', 'population'], inplace = True)
+        self.county = utils.counties(source)
 
         self.df_total = pd.DataFrame()
 
         k = 0
+        i = 0
         for date in self.dates:
 
             print('Processing ' + date)
-            temp = pd.read_csv(inputDirectory + date + '.csv')
+            temp = pd.read_csv(self.downURL[i])
             temp.columns = temp.columns.str.replace('/','_')
             temp.columns = temp.columns.str.replace(' ','_')
             temp.columns = temp.columns.str.lower()
@@ -116,17 +116,18 @@ class MineData:
                     self.df_total = pd.concat([self.df_total,aux], axis=0)
 
                 k += 1
+            i += 1
 
-    def writingData(self):
+    def writingData(self,outfile):
 
         self.df_total.reset_index(inplace=True, drop=True)
-        print(len(self.df_total))
-        print(self.df_total)
-        self.df_total.to_csv('../output/raw_JH_epidemiology_NY_std.csv', index = False)
+        self.df_total.to_csv(outfile, index = False)
 
 if __name__ == '__main__':
 
+    source = 'JH'
+
     data = MineData()
-    data.findingFiles()
-    data.readingData('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/')
-    data.writingData()
+    data.findingFiles('https://api.github.com/repos/CSSEGISandData/COVID-19/contents/csse_covid_19_data/csse_covid_19_daily_reports')
+    data.readingData(source)
+    data.writingData('../output/JHopkins/JHraw_epidemiology_NY_std.csv')
