@@ -1,5 +1,5 @@
-# PoC-NY-data
-This a proof of concept of the standardised data for the State of New York. Only includes Daily Infected ('cases') and deceased ('deaths').
+# NY Times-data
+Standardised raw data for the State of New York. Only includes Daily Infected ('cases') and deceased ('deaths').
 
 # Level of segregation
 
@@ -11,7 +11,7 @@ Counties.
 
 **Note 3:** Data for the state of New York starts on 2020-03-01
 
-**Note 4:** The file contains data up to the current day, but does not include it. The numbers in the `raw_epidemiology_NY_std.csv` file are the final counts at the end of each day and each row of data reports the cumulative number of coronavirus cases and deaths
+**Note 4:** The file contains data up to the current day, but does not include it. The numbers in the `NYTraw_epidemiology_NY_std.csv` file are the final counts at the end of each day and each row of data reports the cumulative number of coronavirus cases and deaths
 
 # Frequency: 
 
