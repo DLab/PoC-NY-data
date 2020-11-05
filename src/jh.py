@@ -11,18 +11,13 @@ county.drop(columns = ['state', 'population'], inplace = True)
 df_us = df.loc[df['Country_Region'] == 'US']
 df_us_ny = df_us.loc[df_us['Province_State'] == 'New York']
 
-#print(len(df_us_ny))
-
-#print(df_us_ny)
 
 print(df_us_ny['Admin2'].to_list())
 
 today = '2020-10-28'
 first_date = '2020-01-22'
 
-# contamos los días considerados con la siguiente instrucción
 total_days = (pd.to_datetime(today)-pd.to_datetime(first_date)).days
-#total_days
 
 d = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
 
@@ -76,7 +71,7 @@ for i in range(total_days + 1):
                 df.loc[idx, 'active'] = active_county[j]
                 df.loc[idx, 'recovered'] = recovered_county[j]
                 if active_county[j] < 0:
-                    print('WHATTTTT? ', date)
+                    print('Actives are negative in this county: ', row, date)
 
             j += 1
 
