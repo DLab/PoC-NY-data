@@ -69,6 +69,7 @@ class MineData:
             flag = 0
             if 'admin2' in temp.columns:
                 temp.rename(columns = {'admin2': 'county'}, inplace = True)
+                temp['county'].replace({'New York City': 'New York'}, inplace=True)
                 flag = 1
 
             temp_us = temp.loc[temp['country'] == 'US']
@@ -81,8 +82,10 @@ class MineData:
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update']).dt.strftime('%Y-%m-%d')
             temp_us_ny.reset_index(inplace=True, drop=True)
 
-            if flag == 1:
+            #if date > '08-30-2020'
 
+            if flag == 1:
+                print('HERE I ENTER...')
                 df = pd.DataFrame(np.zeros((len(self.county), 4)), columns=['cases','deaths','active','recovered'])
                 cases_county = temp_us_ny['confirmed'].copy()
                 deaths_county = temp_us_ny['deaths'].copy()
@@ -90,12 +93,15 @@ class MineData:
                 recovered_county = temp_us_ny['recovered'].copy()
 
                 t = [date2]*len(self.county)
-                df_date = pd.DataFrame(data={'date':t})
+                df_date = pd.DataFrame(data={'date': t})
 
                 j = 0
                 for row in temp_us_ny['county']:
+                    if row == 'New York': print('Se Acomodo')
+                    if row == 'New York City': print('Siguio jodiendo')
                     idx = self.county.loc[self.county['county'] == row].index.values
                     if idx.size > 0:
+                        #print(row, idx, cases_county[j])
                         df.loc[idx, 'cases'] = cases_county[j]
                         df.loc[idx, 'deaths'] = deaths_county[j]
                         df.loc[idx, 'active'] = active_county[j]
@@ -103,7 +109,7 @@ class MineData:
                         if active_county[j] < 0:
                             print('Actives are negative in this county: ', row,' on date: ', date2)
 
-                    j += 1
+                        j += 1
 
 
                 aux = pd.concat([df_date, self.county, df.astype(int)], axis=1)

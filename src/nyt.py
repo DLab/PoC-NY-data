@@ -63,7 +63,7 @@ def selectingData(df,source):
             if idx.size > 0:
                 df.loc[idx, 'cases'] = cases_county[j]
                 df.loc[idx, 'deaths'] = deaths_county[j]
-            j += 1
+                j += 1
 
         aux = pd.concat([df_date, county, df.astype(int)], axis=1)
 
