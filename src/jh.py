@@ -67,10 +67,16 @@ class MineData:
                 temp.rename(columns = {'province_state': 'state', 'country_region': 'country'}, inplace = True)
 
             flag = 0
+            flag2 = 0
             if 'admin2' in temp.columns:
                 temp.rename(columns = {'admin2': 'county'}, inplace = True)
-                temp['county'].replace({'New York City': 'New York'}, inplace=True)
+                #temp['county'].replace({'New York City': 'New York'}, inplace=True)
                 flag = 1
+
+                list_county = temp['county'].to_list()
+                if 'New York' in list_county:
+                    if flag2 == 0: print('NYC segregated: ', date)
+                    flag2 = 1
 
             temp_us = temp.loc[temp['country'] == 'US']
             temp_us_ny = temp_us.loc[temp_us['state'] == 'New York']
@@ -82,10 +88,8 @@ class MineData:
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update']).dt.strftime('%Y-%m-%d')
             temp_us_ny.reset_index(inplace=True, drop=True)
 
-            #if date > '08-30-2020'
 
             if flag == 1:
-                print('HERE I ENTER...')
                 df = pd.DataFrame(np.zeros((len(self.county), 4)), columns=['cases','deaths','active','recovered'])
                 cases_county = temp_us_ny['confirmed'].copy()
                 deaths_county = temp_us_ny['deaths'].copy()
@@ -97,8 +101,6 @@ class MineData:
 
                 j = 0
                 for row in temp_us_ny['county']:
-                    if row == 'New York': print('Se Acomodo')
-                    if row == 'New York City': print('Siguio jodiendo')
                     idx = self.county.loc[self.county['county'] == row].index.values
                     if idx.size > 0:
                         #print(row, idx, cases_county[j])
@@ -110,6 +112,27 @@ class MineData:
                             print('Actives are negative in this county: ', row,' on date: ', date2)
 
                         j += 1
+
+                if flag2 == 1:
+                    list_NYC = ['Bronx', 'Kings', 'New York', 'Queens', 'Richmond']
+                    sum_cases = 0
+                    sum_deaths = 0
+                    sum_active = 0
+                    sum_recovered = 0
+                    for cnty in list_NYC:
+                        idx = self.county.loc[self.county['county'] == cnty].index.values
+                        sum_cases += df.loc[idx, 'cases'].item()
+                        sum_deaths += df.loc[idx, 'deaths'].item()
+                        sum_active += df.loc[idx, 'active'].item()
+                        sum_recovered += df.loc[idx, 'recovered'].item()
+
+                    idxNYC = self.county.loc[self.county['county'] == 'New York City'].index.values
+                    df.loc[idxNYC,'cases'] = sum_cases
+                    df.loc[idxNYC,'deaths'] = sum_deaths
+                    df.loc[idxNYC,'active'] = sum_active
+                    df.loc[idxNYC,'recovered'] = sum_recovered
+
+                    print(df)
 
 
                 aux = pd.concat([df_date, self.county, df.astype(int)], axis=1)
