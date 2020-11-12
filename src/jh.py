@@ -68,6 +68,7 @@ class MineData:
 
         k = 0
         i = 0
+        flag3 = 0
 
         # starts reading the files in the source
         for date in self.dates:
@@ -96,6 +97,9 @@ class MineData:
             if 'admin2' in temp.columns:
                 temp.rename(columns = {'admin2': 'county'}, inplace = True)
                 flag = 1
+                if flag3 == 0:
+                    day1 = date
+                    flag3 = 1
 
             # until Aug the 30th, Jonhs Hopkins reported the data agregated to New York City. This is the
             # join data of the 5 counties: 'Bronx', 'Kings', 'New York', 'Queens' and 'Richmond' (equivalent to
@@ -119,6 +123,12 @@ class MineData:
             # of the file)
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update'], infer_datetime_format=True)
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update']).dt.strftime('%Y-%m-%d')
+
+            if flag == 1:
+                if 'Out of NY' in list_county:
+                    todrop = temp_us_ny.loc[temp_us_ny['county'] == 'Out of NY']
+                    temp_us_ny.drop(todrop.index, inplace = True)
+
             temp_us_ny.reset_index(inplace=True, drop=True)
 
             # This flag is set to identify when the granularity of the data reaches the counties level
@@ -130,6 +140,7 @@ class MineData:
                 active_county = temp_us_ny['active'].copy()
                 recovered_county = temp_us_ny['recovered'].copy()
 
+
                 # Here the standard date is set, i.e. the publication date (in the name of each file)
                 t = [date2]*len(self.county)
                 df_date = pd.DataFrame(data={'date': t})
@@ -140,7 +151,6 @@ class MineData:
                 for row in temp_us_ny['county']:
                     idx = self.county.loc[self.county['county'] == row].index.values
                     if idx.size > 0:
-                        #print(row, idx, cases_county[j])
                         df.loc[idx, 'cases'] = cases_county[j]
                         df.loc[idx, 'deaths'] = deaths_county[j]
                         df.loc[idx, 'active'] = active_county[j]
@@ -172,7 +182,6 @@ class MineData:
                     df.loc[idxNYC,'active'] = sum_active
                     df.loc[idxNYC,'recovered'] = sum_recovered
 
-                    print(df)
 
                 # The dates are concatenated into a single dataframe
                 aux = pd.concat([df_date, self.county, df.astype(int)], axis=1)
@@ -186,6 +195,27 @@ class MineData:
 
                 k += 1
             i += 1
+
+            alert = self.df_total.isnull().values.any()
+            if alert == True:
+                print('CHANFLE ', date)
+
+    def recoveredCases(self):
+
+        day1 = self.df_total['date'].iloc[0]
+        dates = self.df_total['date'].unique()
+        counties = self.df_total['county'].unique()
+
+        recovered = []
+        for day in dates:
+            recovered.append(0)
+            total_days = (pd.to_datetime(day) - pd.to_datetime(day1)).days
+            if total_days >= 14:
+                active_start = (pd.to_datetime(day) - datetime.timedelta(days=14)).strftime('%Y-%m-%d')
+                print(active_start, day)
+                #aux1 = self.df_total.loc[self.df_total['date'] == day]
+                #aux2 = self.df_total.loc[self.df_total['date'] == day]
+
 
     def writingData(self,outfile):
 
@@ -209,6 +239,7 @@ if __name__ == '__main__':
     # provide the url of the GitHub API of the target directory to read in the repository
     data.findingFiles('https://api.github.com/repos/CSSEGISandData/COVID-19/contents/csse_covid_19_data/csse_covid_19_daily_reports')
     data.readingData(source)
+    #data.recoveredCases()
 
     # provide the name of the output file
     data.writingData('../output/JHopkins/JHraw_epidemiology_NY_std.csv')
