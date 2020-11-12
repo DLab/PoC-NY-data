@@ -105,7 +105,7 @@ class MineData:
             # join data of the 5 counties: 'Bronx', 'Kings', 'New York', 'Queens' and 'Richmond' (equivalent to
             # the boroughs: 'Bronx', 'Brooklyn', 'Manhattan', 'Queens', and 'Staten Island')
 
-                list_county = temp['county'].to_list()
+                list_county = temp['county'].unique()
                 if 'New York' in list_county:
                     if flag2 == 0: print('NYC segregated: ', date)
                     flag2 = 1
@@ -125,6 +125,9 @@ class MineData:
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update']).dt.strftime('%Y-%m-%d')
 
             if flag == 1:
+                print()
+                if len(temp_us_ny['county']) > 63:
+                    print('WARNING: the length of counties in source (added a "new county") is larger than in origin. THIS MAY CAUSE AN ERROR!!!')
                 if 'Out of NY' in list_county:
                     todrop = temp_us_ny.loc[temp_us_ny['county'] == 'Out of NY']
                     temp_us_ny.drop(todrop.index, inplace = True)
@@ -202,22 +205,52 @@ class MineData:
 
     def recoveredCases(self):
 
+
         day1 = self.df_total['date'].iloc[0]
         dates = self.df_total['date'].unique()
         counties = self.df_total['county'].unique()
 
-        recovered = []
+        recovered1 = [0]*14*len(counties) # no recovered people during the first 14 days
+        recovered2 = []
         for day in dates:
-            recovered.append(0)
             total_days = (pd.to_datetime(day) - pd.to_datetime(day1)).days
             if total_days >= 14:
                 active_start = (pd.to_datetime(day) - datetime.timedelta(days=14)).strftime('%Y-%m-%d')
-                print(active_start, day)
-                #aux1 = self.df_total.loc[self.df_total['date'] == day]
-                #aux2 = self.df_total.loc[self.df_total['date'] == day]
+                aux1 = self.df_total['cases'].loc[self.df_total['date'] == active_start]
+                aux1.reset_index(inplace=True, drop=True)
+                aux2 = self.df_total['deaths'].loc[self.df_total['date'] == day]
+                aux2.reset_index(inplace=True, drop=True)
+                recovered2.append(aux1.subtract(aux2).to_list())
+
+        flatList = [item for sublist in recovered2 for item in sublist]
+        recovered = recovered1 + flatList
+
+        self.df_recovered = pd.Series(recovered, name = 'recovered')
+
+    def activeCases(self):
+
+        dates = self.df_total['date'].unique()
+
+        active = []
+        for day in dates:
+            aux1 = self.df_total['cases'].loc[self.df_total['date'] == day]
+            aux2 = self.df_total['deaths'].loc[self.df_total['date'] == day]
+            aux3 = self.df_total['recovered'].loc[self.df_total['date'] == day]
+            aux4 = aux1.subtract(aux2)
+            active.append(aux4.subtract(aux3).to_list())
+
+        flatList = [item for sublist in active for item in sublist]
+
+        self.df_active = pd.Series(flatList, name = 'active')
 
 
     def writingData(self,outfile):
+
+        self.df_total.drop(columns=['recovered', 'active'], inplace = True)
+        self.df_total.reset_index(inplace=True, drop=True)
+
+        self.df_total2 = pd.concat([self.df_total, self.df_active, self.df_recovered], axis=1)
+
 
         # Data is writen to a csv file in the standard format.
         # column 0: 'date', column 1: 'fips', column 2: 'county', column 3: 'cases', column 4: 'deaths',
@@ -225,8 +258,7 @@ class MineData:
 
         # Each line correspond to each county
 
-        self.df_total.reset_index(inplace=True, drop=True)
-        self.df_total.to_csv(outfile, index = False)
+        self.df_total2.to_csv(outfile, index = False)
 
 if __name__ == '__main__':
 
@@ -239,7 +271,8 @@ if __name__ == '__main__':
     # provide the url of the GitHub API of the target directory to read in the repository
     data.findingFiles('https://api.github.com/repos/CSSEGISandData/COVID-19/contents/csse_covid_19_data/csse_covid_19_daily_reports')
     data.readingData(source)
-    #data.recoveredCases()
+    data.recoveredCases()
+    data.activeCases()
 
     # provide the name of the output file
     data.writingData('../output/JHopkins/JHraw_epidemiology_NY_std.csv')
