@@ -24,12 +24,12 @@ This file contains borough-specific daily counts of confirmed cases, hospitaliza
 To each borough we use the name of the county. The following table summarizes the equivalence between borought name and county name.
 
 | BOROUGH | COUNTY | abbreviation |
-|----------------------------------------
+|---------|---------|--------------|
 | Bronx | Bronx | bx |
 | Brooklyn | Kings | kg |
 | Manhattan | New York | ny |
 | Queens | Queens | qn |
-| Staten Island | Richmond | rd | 
+| Staten Island | Richmond | rd | |
 
 ### Data definition by columns
 
