@@ -1,4 +1,4 @@
-date,fips,county,case,hospitalized,death,case_avg,hospitalized_avg,death_avg
+date,fips,county,daily_cases,daily_hospitalized,daily_deaths,daily_cases_avg,daily_hospitalized_avg,daily_deaths_avg
 2020-02-29,36005,Bronx,0,0,0,0,0,0
 2020-03-01,36005,Bronx,0,0,0,0,0,0
 2020-03-02,36005,Bronx,0,0,0,0,0,0

@@ -41,7 +41,7 @@ class Minedata:
         #pdb.set_trace()
         
     def CorrectFormat(self,source):
-        cf_nyc = pd.DataFrame(np.zeros((len(self.nyc.date),9)), columns=['date','fips','county','case','hospitalized','death','case_avg','hospitalized_avg','death_avg'])
+        cf_nyc = pd.DataFrame(np.zeros((len(self.nyc.date),9)), columns=['date','fips','county','daily_cases','daily_hospitalized','daily_deaths','case_avg','daily_hospitalized_avg','daily_deaths_avg'])
         
         fips = utils.counties(source)
         fip_nyc = [fips[fips['county']=='New York City'].fips.values[0]]*len(self.nyc.date)
@@ -52,12 +52,12 @@ class Minedata:
         cf_nyc['date'] = date_nyc
         cf_nyc['fips'] = fip_nyc
         cf_nyc['county'] = county_name
-        cf_nyc['case'] = self.nyc['nyc_case_cnt'].copy()
-        cf_nyc['hospitalized'] = self.nyc['nyc_hospitalized_cnt'].copy()
-        cf_nyc['death'] = self.nyc['nyc_death_cnt'].copy()
-        cf_nyc['case_avg'] = self.nyc['nyc_case_cnt_avg'].copy()
-        cf_nyc['hospitalized_avg'] = self.nyc['nyc_hosp_cnt_avg'].copy()
-        cf_nyc['death_avg'] = self.nyc['nyc_death_cnt_avg'].copy()
+        cf_nyc['daily_cases'] = self.nyc['nyc_case_cnt'].copy()
+        cf_nyc['daily_hospitalized'] = self.nyc['nyc_hospitalized_cnt'].copy()
+        cf_nyc['daily_deaths'] = self.nyc['nyc_death_cnt'].copy()
+        cf_nyc['daily_cases_avg'] = self.nyc['nyc_case_cnt_avg'].copy()
+        cf_nyc['daily_hospitalized_avg'] = self.nyc['nyc_hosp_cnt_avg'].copy()
+        cf_nyc['daily_deaths_avg'] = self.nyc['nyc_death_cnt_avg'].copy()
         
         self.nyc_cf = cf_nyc
         
@@ -69,7 +69,7 @@ class Minedata:
         k = 0
         
         for i in range(0,5):
-            cf_boro = pd.DataFrame(np.zeros((len(self.borougth.date),9)),columns=['date','fips','county','case','hospitalized','death','case_avg','hospitalized_avg','death_avg'])
+            cf_boro = pd.DataFrame(np.zeros((len(self.borougth.date),9)),columns=['date','fips','county','daily_cases','daily_hospitalized','daily_deaths','daily_cases_avg','daily_hospitalized_avg','daily_deaths_avg'])
             
             date_boro = self.borougth['date'].copy()
             
@@ -82,12 +82,12 @@ class Minedata:
             
             str_boro=abb[i]
             #spike_cols =[x for x in self.borougth.columns[self.borougth.columns.str.contains(str_boro)]] 
-            cf_boro['case'] = self.borougth[ str_boro + '_case_cnt'].copy()
-            cf_boro['hospitalized'] = self.borougth[str_boro + '_hospitalized_cnt'].copy()
-            cf_boro['death'] = self.borougth[ str_boro + '_death_cnt'].copy()
-            cf_boro['case_avg'] = self.borougth[ str_boro + '_case_cnt_avg'].copy()
-            cf_boro['hospitalized_avg'] = self.borougth[ str_boro + '_hospitalized_cnt_avg'].copy()
-            cf_boro['death_avg'] = self.borougth[ str_boro + '_death_cnt_avg'].copy()
+            cf_boro['daily_cases'] = self.borougth[ str_boro + '_case_cnt'].copy()
+            cf_boro['daily_hospitalized'] = self.borougth[str_boro + '_hospitalized_cnt'].copy()
+            cf_boro['daily_deaths'] = self.borougth[ str_boro + '_death_cnt'].copy()
+            cf_boro['daily_cases_avg'] = self.borougth[ str_boro + '_case_cnt_avg'].copy()
+            cf_boro['daily_hospitalized_avg'] = self.borougth[ str_boro + '_hospitalized_cnt_avg'].copy()
+            cf_boro['daily_deaths_avg'] = self.borougth[ str_boro + '_death_cnt_avg'].copy()
             
             
             if k == 0:

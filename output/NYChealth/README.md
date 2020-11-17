@@ -16,11 +16,12 @@ This file contains borough-specific daily counts of confirmed cases, hospitaliza
 ### Data definition by columns
 
 - `date:` Date of diagnosis (cases), date of admission (hospitalizations), date of death (deaths).
-- `case:` Count of confirmed cases. 
-- `hospilalized:` Count of hospitalized cases citywide
-- `case_avg`: 7-day average of count of confirmed cases.
-- `hospitalized_avg`: 7-day average of count of hospitalized cases.
-- `death_avg`: 7-day average of count of confirmed deaths.
+- `daily_cases:`  Daily count of confirmed cases. 
+- `daily_hospilalized:` Daily count of hospitalized cases
+- `daily_deaths:` Daily count of deaths cases
+- `daily_cases_avg`: 7-day average of daily count of confirmed cases.
+- `daily_hospitalized_avg`: 7-day average of daily count of hospitalized cases.
+- `daily_deaths_avg`: 7-day average of daily count of confirmed deaths.
 
 
 # Note
