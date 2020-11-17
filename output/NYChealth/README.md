@@ -23,7 +23,7 @@ This file contains citywide of NYC daily counts of confirmed cases, hospitalizat
 This file contains borough-specific daily counts of confirmed cases, hospitalizations, and deaths.
 To each borough we use the name of the county. The following table summarizes the equivalence between borought name and county name.
 
-| BOROUGH | COUNTY | abbreviation |
+| BOROUGH | COUNTY | CONTRACTION |
 |---------|---------|--------------|
 | Bronx | Bronx | bx |
 | Brooklyn | Kings | kg |
@@ -34,12 +34,12 @@ To each borough we use the name of the county. The following table summarizes th
 ### Data definition by columns
 
 - `date:` Date of diagnosis (cases), date of admission (hospitalizations), date of death (deaths).
-- `"Borough name abbreviation"_case_cnt` Count of confirmed cases in the Borough name abbreviation. 
-- `"Borough name abbreviation"_hospitalized_cnt:` Count of hospitalized cases in the Borough name abbreviation.
-- `"Borough name abbreviation"_death_cnt:` Count of confirmed deaths in the Bronx.
-- `"Borough name abbreviation"_case_cnt_avg`: 7-day average of count of confirmed cases in the Borough name abbreviation.
-- `"Borough name abbreviation"_hospitalized_cnt_avg`: 7-day average of count of hospitalized cases in the Borough name abbreviation.
-- `"Borough name abbreviation"_death_cnt_avg`: 7-day average of count of confirmed deaths in the Borough name abbreviation.
+- `"Borough contraction"_case_cnt` Count of confirmed cases in the Borough contraction. 
+- `"Borough contraction"_hospitalized_cnt:` Count of hospitalized cases in the Borough contraction.
+- `"Borough contraction"_death_cnt:` Count of confirmed deaths in the Borough contraction.
+- `"Borough contraction"_case_cnt_avg`: 7-day average of count of confirmed cases in the Borough contraction.
+- `"Borough contraction"_hospitalized_cnt_avg`: 7-day average of count of hospitalized cases in the Borough contraction.
+- `"Borough contraction"_death_cnt_avg`: 7-day average of count of confirmed deaths in the Borough contraction.
 
 # Source:
 
