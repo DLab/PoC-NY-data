@@ -117,7 +117,7 @@ if __name__== '__main__':
     data = Minedata() 
     data.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv') 
     data.CorrectFormat(source)
-    data.writing('NYChealthraw_epidemiology_NYC_std.csv','NYChealthraw_epidemiology_BOROUGT_std.csv')
+    data.writing('../output/NYChealth/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/NYChealthraw_epidemiology_BOROUGT_std.csv')
 
 
 
