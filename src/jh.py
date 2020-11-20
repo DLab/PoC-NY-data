@@ -101,7 +101,7 @@ class MineData:
                     day1 = date
                     flag3 = 1
 
-            # until Aug the 30th, Jonhs Hopkins reported the data agregated to New York City. This is the
+            # until Aug the 30th, Jonhs Hopkins reported the data aggregated to New York City. This is the
             # join data of the 5 counties: 'Bronx', 'Kings', 'New York', 'Queens' and 'Richmond' (equivalent to
             # the boroughs: 'Bronx', 'Brooklyn', 'Manhattan', 'Queens', and 'Staten Island')
 
@@ -125,7 +125,6 @@ class MineData:
             temp_us_ny['last_update'] = pd.to_datetime(temp_us_ny['last_update']).dt.strftime('%Y-%m-%d')
 
             if flag == 1:
-                print()
                 if len(temp_us_ny['county']) > 63:
                     print('WARNING: the length of counties in source (added a "new county") is larger than in origin. THIS MAY CAUSE AN ERROR!!!')
                 if 'Out of NY' in list_county:
@@ -205,6 +204,12 @@ class MineData:
 
     def recoveredCases(self):
 
+        # recovered cases are not reported by Johns Hopkins. They are read from the repository above.
+        # This is keep reading them in the case the correct the report.
+        # Meanwhile, the "MinSal" methodology is not shown but inferred that is:
+        # "recovered(t) = cases(t - 14 days) - deaths(t)"
+        # It is a good exercise to include hospitalized when the data will ingested
+        # "recovered(t) = cases(t - 14 days) - deaths(t) - hopitalized(t)"
 
         day1 = self.df_total['date'].iloc[0]
         dates = self.df_total['date'].unique()
@@ -228,6 +233,16 @@ class MineData:
         self.df_recovered = pd.Series(recovered, name = 'recovered')
 
     def activeCases(self):
+
+        # active cases are reported by Johns Hopkins using the WHO methodology:
+        # "active(t) = cases - deaths - recovered"
+        # However, as they always report zero recovered, it is equivalent to only
+        # subtract accumulated deaths from accumulated cases. The active data is still
+        # read from the repository above. This is keep reading them in the case the
+        # correct their report.
+
+        # Meanwhile, we use the WHO methodology above in order to calculate the
+        # active cases, using our estimate of "recovered".
 
         dates = self.df_total['date'].unique()
 
