@@ -1,0 +1,81 @@
+group,subgroup,fips,county,hospitalized_cnt,hospitalized_rate
+Age,0-4,36005,Bronx,86,85.83
+Age,5-12,36005,Bronx,36,23.27
+Age,13-17,36005,Bronx,76,82.51
+Age,18-24,36005,Bronx,359,257.64
+Age,25-34,36005,Bronx,934,410.76
+Age,35-44,36005,Bronx,1189,662.79
+Age,45-54,36005,Bronx,1801,1036.46
+Age,55-64,36005,Bronx,2712,1668.56
+Age,65-74,36005,Bronx,2858,2729.63
+Age,75+,36005,Bronx,3225,3836.41
+Race/ethnicity,Asian/Pacific-Islander,36005,Bronx,328,521.7
+Race/ethnicity,Black/African-American,36005,Bronx,4329,964.55
+Race/ethnicity,Hispanic/Latino,36005,Bronx,5791,781.06
+Race/ethnicity,White,36005,Bronx,1171,576.99
+Sex,Female,36005,Bronx,6099,814.66
+Sex,Male,36005,Bronx,7175,1071.62
+Age,0-4,36047,Kings,116,63.41
+Age,5-12,36047,Kings,73,28.97
+Age,13-17,36047,Kings,80,57.08
+Age,18-24,36047,Kings,463,222.78
+Age,25-34,36047,Kings,1219,259.34
+Age,35-44,36047,Kings,1413,394.71
+Age,45-54,36047,Kings,1988,673.06
+Age,55-64,36047,Kings,3322,1162.62
+Age,65-74,36047,Kings,3929,1868.79
+Age,75+,36047,Kings,4854,3079.15
+Race/ethnicity,Asian/Pacific-Islander,36047,Kings,822,248.43
+Race/ethnicity,Black/African-American,36047,Kings,6037,671.35
+Race/ethnicity,Hispanic/Latino,36047,Kings,2941,642.69
+Race/ethnicity,White,36047,Kings,4897,467.23
+Sex,Female,36047,Kings,8003,593.82
+Sex,Male,36047,Kings,9445,779.17
+Age,0-4,36061,New York,36,47.28
+Age,5-12,36061,New York,18,18.15
+Age,13-17,36061,New York,29,51.86
+Age,18-24,36061,New York,123,84.45
+Age,25-34,36061,New York,494,136.51
+Age,35-44,36061,New York,629,268.62
+Age,45-54,36061,New York,947,484.19
+Age,55-64,36061,New York,1587,862.22
+Age,65-74,36061,New York,1890,1265.81
+Age,75+,36061,New York,2851,2248.25
+Race/ethnicity,Asian/Pacific-Islander,36061,New York,428,190.57
+Race/ethnicity,Black/African-American,36061,New York,1920,763.81
+Race/ethnicity,Hispanic/Latino,36061,New York,2766,577.28
+Race/ethnicity,White,36061,New York,1821,179.96
+Sex,Female,36061,New York,3719,433.84
+Sex,Male,36061,New York,4882,632.81
+Age,0-4,36081,Queens,71,51.79
+Age,5-12,36081,Queens,40,20.42
+Age,13-17,36081,Queens,63,54.88
+Age,18-24,36081,Queens,339,196.89
+Age,25-34,36081,Queens,1211,336.69
+Age,35-44,36081,Queens,1675,547.04
+Age,45-54,36081,Queens,2597,867.98
+Age,55-64,36081,Queens,3983,1325.6
+Age,65-74,36081,Queens,3824,1839.53
+Age,75+,36081,Queens,4805,2994.63
+Race/ethnicity,Asian/Pacific-Islander,36081,Queens,2393,339.01
+Race/ethnicity,Black/African-American,36081,Queens,3368,685.62
+Race/ethnicity,Hispanic/Latino,36081,Queens,5863,941.72
+Race/ethnicity,White,36081,Queens,3438,388.97
+Sex,Female,36081,Queens,7897,680.79
+Sex,Male,36081,Queens,10702,978.34
+Age,0-4,36085,Richmond,15,54.84
+Age,5-12,36085,Richmond,5,10.93
+Age,13-17,36085,Richmond,15,50.22
+Age,18-24,36085,Richmond,58,146.2
+Age,25-34,36085,Richmond,157,242.59
+Age,35-44,36085,Richmond,196,331.23
+Age,45-54,36085,Richmond,356,554.76
+Age,55-64,36085,Richmond,595,899.74
+Age,65-74,36085,Richmond,582,1247.35
+Age,75+,36085,Richmond,778,2383.43
+Race/ethnicity,Asian/Pacific-Islander,36085,Richmond,131,226.52
+Race/ethnicity,Black/African-American,36085,Richmond,385,878.55
+Race/ethnicity,Hispanic/Latino,36085,Richmond,501,683.39
+Race/ethnicity,White,36085,Richmond,1500,377.86
+Sex,Female,36085,Richmond,1201,490.58
+Sex,Male,36085,Richmond,1555,672.2

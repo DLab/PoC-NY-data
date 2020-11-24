@@ -20,28 +20,88 @@ import pdb
 class Minedata:
     
     def File(self,url):
-        df = pd.read_csv(url)
-        #change of format date
-        df['date_of_interest'] = pd.to_datetime(df['date_of_interest']).dt.strftime('%Y-%m-%d') 
-        df = df.drop(['INCOMPLETE','DEATH_COUNT_PROBABLE'], axis=1)
         
-        df.columns = df.columns.str.lower()
-        df.columns = [item.replace('count', 'cnt') for item in df.columns]
-        df.columns = [item.replace('_7day_', '_') for item in df.columns]
-        df.columns = [item.replace('bk', 'kg') for item in df.columns]
-        df.columns = [item.replace('mn', 'ny') for item in df.columns]
-        df.columns = [item.replace('si', 'rd') for item in df.columns]
+        if url.find("group-hosp-by-boro") > -1:
+            df = pd.read_csv(url)
+            todrop = df.loc[df['group'] == 'Boroughwide']
+            df.drop(todrop.index, inplace=True)
+            
+            df.columns = df.columns.str.lower()
+            df.columns = [item.replace('count', 'cnt') for item in df.columns]
+            df.columns = [item.replace('bk', 'kg') for item in df.columns]
+            df.columns = [item.replace('mn', 'ny') for item in df.columns]
+            df.columns = [item.replace('si', 'rd') for item in df.columns]
+            
+            self.hosp_boro=df
+            
+            #pdb.set_trace()
+        else:
+            df = pd.read_csv(url)
+            #change of format date
+            df['date_of_interest'] = pd.to_datetime(df['date_of_interest']).dt.strftime('%Y-%m-%d') 
+            df = df.drop(['INCOMPLETE','DEATH_COUNT_PROBABLE'], axis=1)
         
-        df=df.rename(columns = {'date_of_interest': 'date', 'case_cnt':'nyc_case_cnt', 'hospitalized_cnt':'nyc_hospitalized_cnt', 'death_cnt':'nyc_death_cnt', 'case_cnt_avg':'nyc_case_cnt_avg', 'hosp_cnt_avg':'nyc_hosp_cnt_avg', 'death_cnt_avg':'nyc_death_cnt_avg'})
+            df.columns = df.columns.str.lower()
+            df.columns = [item.replace('count', 'cnt') for item in df.columns]
+            df.columns = [item.replace('_7day_', '_') for item in df.columns]
+            df.columns = [item.replace('bk', 'kg') for item in df.columns]
+            df.columns = [item.replace('mn', 'ny') for item in df.columns]
+            df.columns = [item.replace('si', 'rd') for item in df.columns]
         
-        self.nyc = df[['date','nyc_case_cnt','nyc_hospitalized_cnt','nyc_death_cnt','nyc_case_cnt_avg','nyc_hosp_cnt_avg','nyc_death_cnt_avg']]
+            df=df.rename(columns = {'date_of_interest': 'date', 'case_cnt':'nyc_case_cnt', 'hospitalized_cnt':'nyc_hospitalized_cnt', 'death_cnt':'nyc_death_cnt', 'case_cnt_avg':'nyc_case_cnt_avg', 'hosp_cnt_avg':'nyc_hosp_cnt_avg', 'death_cnt_avg':'nyc_death_cnt_avg'})
         
-        self.borougth = df.drop(['nyc_case_cnt','nyc_hospitalized_cnt','nyc_death_cnt','nyc_case_cnt_avg','nyc_hosp_cnt_avg','nyc_death_cnt_avg'], axis=1)
+            self.nyc = df[['date','nyc_case_cnt','nyc_hospitalized_cnt','nyc_death_cnt','nyc_case_cnt_avg','nyc_hosp_cnt_avg','nyc_death_cnt_avg']]
         
-        #pdb.set_trace()
+            self.borougth = df.drop(['nyc_case_cnt','nyc_hospitalized_cnt','nyc_death_cnt','nyc_case_cnt_avg','nyc_hosp_cnt_avg','nyc_death_cnt_avg'], axis=1)
+        
+            #pdb.set_trace()
+    
+    def CorrectFormatBoro_hosp(self,source): 
+        
+        self.hosp_boro_cf=pd.DataFrame()
+        
+        Cnty = ['Bronx','Kings','New York','Queens','Richmond']
+        abb = ['bx','kg','ny','qn','rd']
+        
+        k = 0
+        
+        for i in range(0,5):
+            cf_boro_hosp = pd.DataFrame(columns=['group', 'subgroup', 'fips', 'county', 'hospitalized_cnt', 'hospitalized_rate'])
+            
+            cf_boro_hosp['group']=self.hosp_boro['group'].copy()
+            cf_boro_hosp['subgroup']=self.hosp_boro['subgroup'].copy()
+            
+            fips = utils.counties(source)
+            fip = [fips[fips.county==Cnty[i]]['fips'].values[0]]*len(self.hosp_boro['group'])
+            cf_boro_hosp['fips']=fip
+            
+            cf_boro_hosp['county']=[Cnty[i]]*len(self.hosp_boro['group'])
+            
+            str_boro=abb[i]
+            cf_boro_hosp['hospitalized_cnt'] = self.hosp_boro[str_boro + '_hospitalized_cnt'].copy()
+            cf_boro_hosp['hospitalized_rate'] = self.hosp_boro[str_boro + '_hospitalized_rate'].copy()
+            
+            if k==0:
+                self.hosp_boro_cf = cf_boro_hosp.copy()
+                
+            else:
+                self.hosp_boro_cf = pd.concat([self.hosp_boro_cf,cf_boro_hosp], axis=0)
+            
+            k +=1
+    
+        self.hosp_boro_cf=self.hosp_boro_cf.reset_index() 
+        self.hosp_boro_cf=self.hosp_boro_cf.drop(['index'], axis=1)
+
+        
+    def WritingBoro_hosp(self,outfile):
+        
+        self.hosp_boro_cf.to_csv(outfile, index=False)
+        
+        
         
     def CorrectFormat(self,source):
-        cf_nyc = pd.DataFrame(np.zeros((len(self.nyc.date),9)), columns=['date','fips','county','daily_cases','daily_hospitalized','daily_deaths','case_avg','daily_hospitalized_avg','daily_deaths_avg'])
+        
+        cf_nyc = pd.DataFrame(np.zeros((len(self.nyc.date),9)), columns=['date','fips','county','daily_cases','daily_hospitalized','daily_deaths','daily_cases_avg','daily_hospitalized_avg','daily_deaths_avg'])
         
         fips = utils.counties(source)
         fip_nyc = [fips[fips['county']=='New York City'].fips.values[0]]*len(self.nyc.date)
@@ -56,6 +116,7 @@ class Minedata:
         cf_nyc['daily_hospitalized'] = self.nyc['nyc_hospitalized_cnt'].copy()
         cf_nyc['daily_deaths'] = self.nyc['nyc_death_cnt'].copy()
         cf_nyc['daily_cases_avg'] = self.nyc['nyc_case_cnt_avg'].copy()
+        #pdb.set_trace()
         cf_nyc['daily_hospitalized_avg'] = self.nyc['nyc_hosp_cnt_avg'].copy()
         cf_nyc['daily_deaths_avg'] = self.nyc['nyc_death_cnt_avg'].copy()
         
@@ -102,11 +163,11 @@ class Minedata:
             
         
         
-    def writing(self,outfile1,outfile2):
+    def writing(self,outfile):
         
-        self.nyc_cf.to_csv(outfile1, index= False)
+        self.nyc_cf.to_csv(outfile[0], index= False)
         
-        self.borougth_cf.to_csv(outfile2, index = False)
+        self.borougth_cf.to_csv(outfile[1], index = False)
         
 
 
@@ -114,17 +175,24 @@ if __name__== '__main__':
     
     source = 'JH'
     
-    data = Minedata() 
-    data.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv') 
-    data.CorrectFormat(source)
-    data.writing('../output/NYChealth/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/NYChealthraw_epidemiology_BOROUGT_std.csv')
+    data0 = Minedata() 
+    data0.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv') 
+    data0.CorrectFormat(source)
+    data0.writing(['../output/NYChealth/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
+    ### dataset with previous information. 
+    
+    data1 = Minedata()
+    data1.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/9d4dc17a508b271804ca7ecea2aaca2f77b2493a/trends/data-by-day.csv')
+    data1.CorrectFormat(source)
+    data1.writing(['../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
-
-
-
-
-
+    data2 = Minedata()
+    data2.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/totals/group-hosp-by-boro.csv')
+    data2.CorrectFormatBoro_hosp(source)
+    data2.WritingBoro_hosp('../output/NYChealth/HospBoro_NYChealthraw_epidemiology_BOROUGT_std.csv')
+    
+    
 
 
 
