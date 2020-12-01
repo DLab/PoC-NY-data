@@ -1,81 +1,81 @@
 group,subgroup,fips,county,hospitalized_cnt,hospitalized_rate
-Age,0-4,36005,Bronx,86,85.83
-Age,5-12,36005,Bronx,36,23.27
-Age,13-17,36005,Bronx,76,82.51
-Age,18-24,36005,Bronx,359,257.64
-Age,25-34,36005,Bronx,934,410.76
-Age,35-44,36005,Bronx,1189,662.79
-Age,45-54,36005,Bronx,1801,1036.46
-Age,55-64,36005,Bronx,2712,1668.56
-Age,65-74,36005,Bronx,2858,2729.63
-Age,75+,36005,Bronx,3225,3836.41
-Race/ethnicity,Asian/Pacific-Islander,36005,Bronx,328,521.7
-Race/ethnicity,Black/African-American,36005,Bronx,4329,964.55
-Race/ethnicity,Hispanic/Latino,36005,Bronx,5791,781.06
-Race/ethnicity,White,36005,Bronx,1171,576.99
-Sex,Female,36005,Bronx,6099,814.66
-Sex,Male,36005,Bronx,7175,1071.62
-Age,0-4,36047,Kings,116,63.41
-Age,5-12,36047,Kings,73,28.97
-Age,13-17,36047,Kings,80,57.08
-Age,18-24,36047,Kings,463,222.78
-Age,25-34,36047,Kings,1219,259.34
-Age,35-44,36047,Kings,1413,394.71
-Age,45-54,36047,Kings,1988,673.06
-Age,55-64,36047,Kings,3322,1162.62
-Age,65-74,36047,Kings,3929,1868.79
-Age,75+,36047,Kings,4854,3079.15
-Race/ethnicity,Asian/Pacific-Islander,36047,Kings,822,248.43
-Race/ethnicity,Black/African-American,36047,Kings,6037,671.35
-Race/ethnicity,Hispanic/Latino,36047,Kings,2941,642.69
-Race/ethnicity,White,36047,Kings,4897,467.23
-Sex,Female,36047,Kings,8003,593.82
-Sex,Male,36047,Kings,9445,779.17
-Age,0-4,36061,New York,36,47.28
-Age,5-12,36061,New York,18,18.15
+Age,0-4,36005,Bronx,88,87.83
+Age,5-12,36005,Bronx,39,25.21
+Age,13-17,36005,Bronx,77,83.6
+Age,18-24,36005,Bronx,365,261.94
+Age,25-34,36005,Bronx,947,416.48
+Age,35-44,36005,Bronx,1211,675.05
+Age,45-54,36005,Bronx,1829,1052.57
+Age,55-64,36005,Bronx,2747,1690.1
+Age,65-74,36005,Bronx,2898,2767.83
+Age,75+,36005,Bronx,3266,3885.18
+Race/ethnicity,Asian/Pacific-Islander,36005,Bronx,335,532.38
+Race/ethnicity,Black/African-American,36005,Bronx,4364,973.07
+Race/ethnicity,Hispanic/Latino,36005,Bronx,5893,794.33
+Race/ethnicity,White,36005,Bronx,1193,589.64
+Sex,Female,36005,Bronx,6189,826.68
+Sex,Male,36005,Bronx,7277,1086.85
+Age,0-4,36047,Kings,118,64.51
+Age,5-12,36047,Kings,75,29.76
+Age,13-17,36047,Kings,81,57.79
+Age,18-24,36047,Kings,470,226.15
+Age,25-34,36047,Kings,1241,264.02
+Age,35-44,36047,Kings,1438,401.69
+Age,45-54,36047,Kings,2018,683.22
+Age,55-64,36047,Kings,3369,1179.06
+Age,65-74,36047,Kings,3978,1892.1
+Age,75+,36047,Kings,4911,3115.31
+Race/ethnicity,Asian/Pacific-Islander,36047,Kings,834,252.28
+Race/ethnicity,Black/African-American,36047,Kings,6102,678.68
+Race/ethnicity,Hispanic/Latino,36047,Kings,2974,649.92
+Race/ethnicity,White,36047,Kings,4988,476.44
+Sex,Female,36047,Kings,8124,602.8
+Sex,Male,36047,Kings,9568,789.31
+Age,0-4,36061,New York,38,49.91
+Age,5-12,36061,New York,19,19.15
 Age,13-17,36061,New York,29,51.86
-Age,18-24,36061,New York,123,84.45
-Age,25-34,36061,New York,494,136.51
-Age,35-44,36061,New York,629,268.62
-Age,45-54,36061,New York,947,484.19
-Age,55-64,36061,New York,1587,862.22
-Age,65-74,36061,New York,1890,1265.81
-Age,75+,36061,New York,2851,2248.25
-Race/ethnicity,Asian/Pacific-Islander,36061,New York,428,190.57
-Race/ethnicity,Black/African-American,36061,New York,1920,763.81
-Race/ethnicity,Hispanic/Latino,36061,New York,2766,577.28
-Race/ethnicity,White,36061,New York,1821,179.96
-Sex,Female,36061,New York,3719,433.84
-Sex,Male,36061,New York,4882,632.81
-Age,0-4,36081,Queens,71,51.79
-Age,5-12,36081,Queens,40,20.42
-Age,13-17,36081,Queens,63,54.88
-Age,18-24,36081,Queens,339,196.89
-Age,25-34,36081,Queens,1211,336.69
-Age,35-44,36081,Queens,1675,547.04
-Age,45-54,36081,Queens,2597,867.98
-Age,55-64,36081,Queens,3983,1325.6
-Age,65-74,36081,Queens,3824,1839.53
-Age,75+,36081,Queens,4805,2994.63
-Race/ethnicity,Asian/Pacific-Islander,36081,Queens,2393,339.01
-Race/ethnicity,Black/African-American,36081,Queens,3368,685.62
-Race/ethnicity,Hispanic/Latino,36081,Queens,5863,941.72
-Race/ethnicity,White,36081,Queens,3438,388.97
-Sex,Female,36081,Queens,7897,680.79
-Sex,Male,36081,Queens,10702,978.34
-Age,0-4,36085,Richmond,15,54.84
-Age,5-12,36085,Richmond,5,10.93
+Age,18-24,36061,New York,127,87.2
+Age,25-34,36061,New York,510,140.93
+Age,35-44,36061,New York,643,274.6
+Age,45-54,36061,New York,958,489.82
+Age,55-64,36061,New York,1609,874.18
+Age,65-74,36061,New York,1911,1279.88
+Age,75+,36061,New York,2896,2283.73
+Race/ethnicity,Asian/Pacific-Islander,36061,New York,441,196.04
+Race/ethnicity,Black/African-American,36061,New York,1938,771.85
+Race/ethnicity,Hispanic/Latino,36061,New York,2807,586.11
+Race/ethnicity,White,36061,New York,1849,182.66
+Sex,Female,36061,New York,3793,442.47
+Sex,Male,36061,New York,4944,640.85
+Age,0-4,36081,Queens,73,53.25
+Age,5-12,36081,Queens,41,20.93
+Age,13-17,36081,Queens,65,56.62
+Age,18-24,36081,Queens,346,200.95
+Age,25-34,36081,Queens,1236,343.64
+Age,35-44,36081,Queens,1701,555.53
+Age,45-54,36081,Queens,2642,883.02
+Age,55-64,36081,Queens,4038,1343.9
+Age,65-74,36081,Queens,3893,1872.72
+Age,75+,36081,Queens,4881,3041.99
+Race/ethnicity,Asian/Pacific-Islander,36081,Queens,2459,348.58
+Race/ethnicity,Black/African-American,36081,Queens,3419,696.26
+Race/ethnicity,Hispanic/Latino,36081,Queens,5944,954.46
+Race/ethnicity,White,36081,Queens,3500,396.59
+Sex,Female,36081,Queens,8018,691.23
+Sex,Male,36081,Queens,10894,995.9
+Age,0-4,36085,Richmond,17,62.15
+Age,5-12,36085,Richmond,6,13.11
 Age,13-17,36085,Richmond,15,50.22
-Age,18-24,36085,Richmond,58,146.2
-Age,25-34,36085,Richmond,157,242.59
-Age,35-44,36085,Richmond,196,331.23
-Age,45-54,36085,Richmond,356,554.76
-Age,55-64,36085,Richmond,595,899.74
-Age,65-74,36085,Richmond,582,1247.35
-Age,75+,36085,Richmond,778,2383.43
-Race/ethnicity,Asian/Pacific-Islander,36085,Richmond,131,226.52
-Race/ethnicity,Black/African-American,36085,Richmond,385,878.55
-Race/ethnicity,Hispanic/Latino,36085,Richmond,501,683.39
-Race/ethnicity,White,36085,Richmond,1500,377.86
-Sex,Female,36085,Richmond,1201,490.58
-Sex,Male,36085,Richmond,1555,672.2
+Age,18-24,36085,Richmond,60,151.24
+Age,25-34,36085,Richmond,163,251.86
+Age,35-44,36085,Richmond,207,349.82
+Age,45-54,36085,Richmond,373,581.25
+Age,55-64,36085,Richmond,626,946.62
+Age,65-74,36085,Richmond,621,1330.93
+Age,75+,36085,Richmond,842,2579.5
+Race/ethnicity,Asian/Pacific-Islander,36085,Richmond,134,231.14
+Race/ethnicity,Black/African-American,36085,Richmond,400,910.91
+Race/ethnicity,Hispanic/Latino,36085,Richmond,526,717.61
+Race/ethnicity,White,36085,Richmond,1617,406.82
+Sex,Female,36085,Richmond,1284,524.48
+Sex,Male,36085,Richmond,1645,711.11

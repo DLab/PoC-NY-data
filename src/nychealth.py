@@ -7,6 +7,7 @@ Created on Thu Nov 12 18:58:35 2020
 
 import pandas as pd
 import numpy as np
+import datetime
 import requests
 import utils
 import pdb
@@ -33,8 +34,30 @@ class Minedata:
             df.columns = [item.replace('si', 'rd') for item in df.columns]
             
             self.hosp_boro=df
+        
+        elif url.find("tests.csv") > -1:
+            df = pd.read_csv(url)
+            df = df.drop(['INCOMPLETE'], axis=1)
+            df.columns = df.columns.str.lower()
+            df = df.rename(columns = {'total_tests':'cnt_test', 'positive_tests':'cnt_positive_test', 'percent_positive':'per_positive', 'total_tests_7days_avg':'cnt_tests_avg', 'positive_tests_7days_avg':'cnt_positive_tests_avg', 'percent_positive_7days_avg':'per_positive_avg'})
+            df['date'] = pd.to_datetime(df['date'].values).strftime('%Y-%m-%d')
+            df['fips']=np.zeros((len(df),1))
+            df['county']=['New York City']*len(df)
             
-            #pdb.set_trace()
+            cols = list(df)
+            cols.insert(1, cols.pop(cols.index('fips')))
+            cols.insert(2, cols.pop(cols.index('county')))
+            
+            df=df[cols]
+            
+            fips = utils.counties(source)
+            fip_nyc = [fips[fips['county']=='New York City'].fips.values[0]]*len(df)
+            
+            df['fips']=fip_nyc
+            
+            self.tests=df
+            
+        
         else:
             df = pd.read_csv(url)
             #change of format date
@@ -97,6 +120,11 @@ class Minedata:
         
         self.hosp_boro_cf.to_csv(outfile, index=False)
         
+    def WritingNYC_tests(self,outfile):
+        
+        self.tests.to_csv(outfile, index=False)
+        
+        
         
         
     def CorrectFormat(self,source):
@@ -149,7 +177,7 @@ class Minedata:
             cf_boro['daily_cases_avg'] = self.borougth[ str_boro + '_case_cnt_avg'].copy()
             cf_boro['daily_hospitalized_avg'] = self.borougth[ str_boro + '_hospitalized_cnt_avg'].copy()
             cf_boro['daily_deaths_avg'] = self.borougth[ str_boro + '_death_cnt_avg'].copy()
-            
+            #pdb.set_trace()
             
             if k == 0:
                 self.borougth_cf = cf_boro.copy()
@@ -192,8 +220,9 @@ if __name__== '__main__':
     data2.CorrectFormatBoro_hosp(source)
     data2.WritingBoro_hosp('../output/NYChealth/HospBoro_NYChealthraw_epidemiology_BOROUGT_std.csv')
     
-    
-
+    data3 = Minedata()
+    data3.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/tests.csv')
+    data3.WritingNYC_tests('../output/NYChealth/tests_NYChealthraw_epidemiology_NYC_std.csv')
 
 
 
