@@ -12,9 +12,6 @@ import requests
 import utils
 import pdb
 
-## covid-like-illness-csv
-## data-by-day-csv
-## tests.csv
 ## Opendata: COVID-19 Outcomes by Testing Cohorts: Cases, Hospitalizations, and Deaths
 ## Opendata: COVID-19 Daily Counts of Cases, Hospitalizations, and Deaths
 
@@ -22,18 +19,22 @@ class Minedata:
     
     def File(self,url):
         
-        if url.find("group-hosp-by-boro") > -1:
+        if url.find("group-data-by-boro.csv") > -1:
             df = pd.read_csv(url)
-            todrop = df.loc[df['group'] == 'Boroughwide']
-            df.drop(todrop.index, inplace=True)
             
             df.columns = df.columns.str.lower()
             df.columns = [item.replace('count', 'cnt') for item in df.columns]
+            
             df.columns = [item.replace('bk', 'kg') for item in df.columns]
             df.columns = [item.replace('mn', 'ny') for item in df.columns]
             df.columns = [item.replace('si', 'rd') for item in df.columns]
+            todrop = df.loc[df['group'] == 'Boroughwide']
+            df.drop(todrop.index, inplace=True)
+            df.group = df.group.str.replace('/','_')
+            df.subgroup = df.subgroup.str.replace('/','_')
+            df.subgroup = df.subgroup.str.replace('-','_')
+            self.group_data = df
             
-            self.hosp_boro=df
         
         elif url.find("tests.csv") > -1:
             df = pd.read_csv(url)
@@ -79,52 +80,57 @@ class Minedata:
         
             #pdb.set_trace()
     
-    def CorrectFormatBoro_hosp(self,source): 
+    def CorrectFormatgroup_data(self,source): 
         
-        self.hosp_boro_cf=pd.DataFrame()
+        self.group_data_cf=pd.DataFrame()
         
-        Cnty = ['Bronx','Kings','New York','Queens','Richmond']
+        Cnty = ['Bronx', 'Kings', 'New York', 'Queens', 'Richmond']
         abb = ['bx','kg','ny','qn','rd']
         
         k = 0
         
-        for i in range(0,5):
-            cf_boro_hosp = pd.DataFrame(columns=['group', 'subgroup', 'fips', 'county', 'hospitalized_cnt', 'hospitalized_rate'])
+        for i in range(0,len(Cnty)):
+            cf_group_data = pd.DataFrame(columns=['date','fips', 'county', 'group', 'subgroup', 'case_cnt','hospitalized_cnt','death_cnt','case_rate','hospitalized_rate','death_rate'])
+            today = datetime.date.today()
             
-            cf_boro_hosp['group']=self.hosp_boro['group'].copy()
-            cf_boro_hosp['subgroup']=self.hosp_boro['subgroup'].copy()
+            cf_group_data['date']=[today]*len(self.group_data['group'])
+            
+            cf_group_data['group']=self.group_data['group'].copy()
+            cf_group_data['subgroup']=self.group_data['subgroup'].copy()
             
             fips = utils.counties(source)
-            fip = [fips[fips.county==Cnty[i]]['fips'].values[0]]*len(self.hosp_boro['group'])
-            cf_boro_hosp['fips']=fip
+            fip = [fips[fips.county==Cnty[i]]['fips'].values[0]]*len(self.group_data['group'])
+            cf_group_data['fips']=fip
             
-            cf_boro_hosp['county']=[Cnty[i]]*len(self.hosp_boro['group'])
+            cf_group_data['county']=[Cnty[i]]*len(self.group_data['group'])
             
             str_boro=abb[i]
-            cf_boro_hosp['hospitalized_cnt'] = self.hosp_boro[str_boro + '_hospitalized_cnt'].copy()
-            cf_boro_hosp['hospitalized_rate'] = self.hosp_boro[str_boro + '_hospitalized_rate'].copy()
+            cf_group_data['case_cnt'] = self.group_data[str_boro + '_case_cnt'].copy()
+            cf_group_data['hospitalized_cnt'] = self.group_data[str_boro + '_hospitalized_cnt'].copy()
+            cf_group_data['death_cnt'] = self.group_data[str_boro + '_death_cnt'].copy()
+            cf_group_data['case_rate'] = self.group_data[str_boro + '_case_rate'].copy()
+            cf_group_data['hospitalized_rate'] = self.group_data[str_boro + '_hospitalized_rate'].copy()
+            cf_group_data['death_rate'] = self.group_data[str_boro + '_death_cnt'].copy()
             
-            if k==0:
-                self.hosp_boro_cf = cf_boro_hosp.copy()
-                
+            if k == 0:
+                self.group_data_cf = cf_group_data.copy()
             else:
-                self.hosp_boro_cf = pd.concat([self.hosp_boro_cf,cf_boro_hosp], axis=0)
+                self.group_data_cf = pd.concat([self.group_data_cf,cf_group_data] , axis=0)
             
             k +=1
-    
-        self.hosp_boro_cf=self.hosp_boro_cf.reset_index() 
-        self.hosp_boro_cf=self.hosp_boro_cf.drop(['index'], axis=1)
+        
+        self.group_data_cf=self.group_data_cf.reset_index()
+        self.group_data_cf=self.group_data_cf.drop(['index'], axis=1)
+        
 
         
-    def WritingBoro_hosp(self,outfile):
+    def Writingroup_data(self,outfile):
         
-        self.hosp_boro_cf.to_csv(outfile, index=False)
+        self.group_data_cf.to_csv(outfile, index=False)
         
     def WritingNYC_tests(self,outfile):
         
         self.tests.to_csv(outfile, index=False)
-        
-        
         
         
     def CorrectFormat(self,source):
@@ -206,7 +212,7 @@ if __name__== '__main__':
     data0 = Minedata() 
     data0.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv') 
     data0.CorrectFormat(source)
-    data0.writing(['../output/NYChealth/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/NYChealthraw_epidemiology_BOROUGT_std.csv'])
+    data0.writing(['../output/NYChealth/daily/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/daily/NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
     ### dataset with previous information. 
     
@@ -216,13 +222,13 @@ if __name__== '__main__':
     data1.writing(['../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
     data2 = Minedata()
-    data2.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/totals/group-hosp-by-boro.csv')
-    data2.CorrectFormatBoro_hosp(source)
-    data2.WritingBoro_hosp('../output/NYChealth/HospBoro_NYChealthraw_epidemiology_BOROUGT_std.csv')
+    data2.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/totals/group-data-by-boro.csv')
+    data2.CorrectFormatgroup_data(source)
+    data2.Writingroup_data('../output/NYChealth/cumulative/Groupdata_NYChealthraw_epidemiology_BOROUGT_std.csv')
     
     data3 = Minedata()
     data3.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/tests.csv')
-    data3.WritingNYC_tests('../output/NYChealth/tests_NYChealthraw_epidemiology_NYC_std.csv')
+    data3.WritingNYC_tests('../output/NYChealth/daily/tests_NYChealthraw_epidemiology_NYC_std.csv')
 
 
 
