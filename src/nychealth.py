@@ -59,6 +59,8 @@ class Minedata:
             fip_nyc = [fips[fips['county']=='New York City'].fips.values[0]]*len(df)
             
             df['fips']=fip_nyc
+            df['per_positive'] = pd.Series(["{0:.4f}%".format(val) for val in df['per_positive']], index = df.index)
+            df['per_positive_avg'] = pd.Series(["{0:.4f}%".format(val) for val in df['per_positive_avg']], index = df.index)
             
             self.tests=df
             
