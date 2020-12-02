@@ -52,6 +52,7 @@ This file contains borough-specific daily counts of confirmed cases, hospitaliza
  * Per 100,000 people by borough of residence and demographic groups
 
 ### Data definition by columns
+- `date:` Last update in the private repository.
 - `group:` Group type: Age, Race_ethinicity and Sex.
 - `subgroup:` Indicates the age group in years, race/ethnicity group, or sex of stratification.
 - `case_cnt:` Number of confirmed cases by indicated group
