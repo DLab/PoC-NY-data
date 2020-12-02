@@ -1,5 +1,4 @@
 date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,hospitalized_rate,death_rate
-2020-12-02,36005,Bronx,,,,,,,,
 2020-12-02,36005,Bronx,Age,0_4,718.0,89.0,,716.57,88.82,
 2020-12-02,36005,Bronx,Age,5_12,1370.0,41.0,,885.52,26.5,
 2020-12-02,36005,Bronx,Age,13_17,1338.0,77.0,,1452.6,83.6,
@@ -16,7 +15,7 @@ date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,ho
 2020-12-02,36005,Bronx,Race_ethnicity,Hispanic_Latino,24532.0,5915.0,1909.0,3161.68,797.26,1909.0
 2020-12-02,36005,Bronx,Race_ethnicity,White,3948.0,1193.0,470.0,2714.07,589.72,470.0
 2020-12-02,36005,Bronx,Sex,Female,32147.0,6200.0,1696.0,4293.94,828.15,1696.0
-2020-12-02,36047,Kings,,,,,,,,
+2020-12-02,36005,Bronx,Sex,Male,30361.0,7294.0,2392.0,4534.55,1089.39,2392.0
 2020-12-02,36047,Kings,Age,0_4,1025.0,118.0,,560.34,64.51,
 2020-12-02,36047,Kings,Age,5_12,2082.0,75.0,,826.27,29.76,
 2020-12-02,36047,Kings,Age,13_17,2443.0,81.0,,1742.99,57.79,
@@ -33,7 +32,7 @@ date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,ho
 2020-12-02,36047,Kings,Race_ethnicity,Hispanic_Latino,9143.0,2975.0,1172.0,1921.86,650.02,1172.0
 2020-12-02,36047,Kings,Race_ethnicity,White,18300.0,4998.0,1750.0,1894.45,477.45,1750.0
 2020-12-02,36047,Kings,Sex,Female,42454.0,8130.0,2348.0,3150.09,603.25,2348.0
-2020-12-02,36061,New York,,,,,,,,
+2020-12-02,36047,Kings,Sex,Male,42148.0,9568.0,3510.0,3477.0,789.31,3510.0
 2020-12-02,36061,New York,Age,0_4,353.0,39.0,,463.6,51.22,
 2020-12-02,36061,New York,Age,5_12,639.0,19.0,,644.16,19.15,
 2020-12-02,36061,New York,Age,13_17,664.0,29.0,,1187.52,51.86,
@@ -50,7 +49,7 @@ date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,ho
 2020-12-02,36061,New York,Race_ethnicity,Hispanic_Latino,8625.0,2807.0,963.0,1924.25,586.19,963.0
 2020-12-02,36061,New York,Race_ethnicity,White,9066.0,1850.0,679.0,1033.26,182.75,679.0
 2020-12-02,36061,New York,Sex,Female,19665.0,3796.0,1060.0,2294.02,442.82,1060.0
-2020-12-02,36081,Queens,,,,,,,,
+2020-12-02,36061,New York,Sex,Male,20983.0,4945.0,1518.0,2719.84,640.98,1518.0
 2020-12-02,36081,Queens,Age,0_4,730.0,73.0,,532.48,53.25,
 2020-12-02,36081,Queens,Age,5_12,1544.0,41.0,,788.08,20.93,
 2020-12-02,36081,Queens,Age,13_17,1749.0,65.0,,1523.62,56.62,
@@ -67,7 +66,7 @@ date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,ho
 2020-12-02,36081,Queens,Race_ethnicity,Hispanic_Latino,17772.0,5946.0,1857.0,2788.82,954.69,1857.0
 2020-12-02,36081,Queens,Race_ethnicity,White,11565.0,3505.0,1521.0,1816.63,397.21,1521.0
 2020-12-02,36081,Queens,Sex,Female,42371.0,8019.0,2384.0,3652.77,691.31,2384.0
-2020-12-02,36085,Richmond,,,,,,,,
+2020-12-02,36081,Queens,Sex,Male,44524.0,10898.0,3740.0,4070.25,996.26,3740.0
 2020-12-02,36085,Richmond,Age,0_4,247.0,17.0,,902.98,62.15,
 2020-12-02,36085,Richmond,Age,5_12,532.0,6.0,,1162.72,13.11,
 2020-12-02,36085,Richmond,Age,13_17,628.0,15.0,,2102.73,50.22,
@@ -84,3 +83,4 @@ date,fips,county,group,subgroup,case_cnt,hospitalized_cnt,death_cnt,case_rate,ho
 2020-12-02,36085,Richmond,Race_ethnicity,Hispanic_Latino,2279.0,527.0,136.0,2735.18,719.91,136.0
 2020-12-02,36085,Richmond,Race_ethnicity,White,8349.0,1619.0,599.0,2762.43,407.36,599.0
 2020-12-02,36085,Richmond,Sex,Female,10616.0,1285.0,394.0,4336.37,524.89,394.0
+2020-12-02,36085,Richmond,Sex,Male,11177.0,1646.0,555.0,4831.63,711.54,555.0

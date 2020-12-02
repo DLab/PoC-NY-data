@@ -33,6 +33,10 @@ class Minedata:
             df.group = df.group.str.replace('/','_')
             df.subgroup = df.subgroup.str.replace('/','_')
             df.subgroup = df.subgroup.str.replace('-','_')
+            
+            df=df.reset_index()
+            df=df.drop(['index'], axis=1)
+        
             self.group_data = df
             
         
@@ -121,7 +125,6 @@ class Minedata:
         
         self.group_data_cf=self.group_data_cf.reset_index()
         self.group_data_cf=self.group_data_cf.drop(['index'], axis=1)
-        
 
         
     def Writingroup_data(self,outfile):
