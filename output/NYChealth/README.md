@@ -4,11 +4,11 @@ Contains standardized raw data the New York City.
 
 # Historical files
 
-## NYChealraw_epidemiology_NYC_std
+## 1] NYChealraw_epidemiology_NYC_std
 
 This file contains citywide of NYC daily counts of confirmed cases, hospitalizations, and deaths.
 
-## NYChealraw_epidemiology_BOROUGT_std
+## 2] NYChealraw_epidemiology_BOROUGT_std
 
 This file contains borough-specific daily counts of confirmed cases, hospitalizations, and deaths.
 
@@ -26,7 +26,7 @@ Files NYChealraw_epidemiology_NYC_std and NYChealraw_epidemiology_BOROUGT_std sh
 - `daily_deaths_avg`: 7-day average of daily count of confirmed deaths.
 
 
-## tests_NYChealthraw_epidemiology_NYC_std.csv
+## 3] tests_NYChealthraw_epidemiology_NYC_std.csv
 
 This file contains the number of people who received PCR test, the number of people with positive results, and the percentage of people tested who tested positive, stratified by day. The dates shown in this table reflect the date of specimen collection (i.e., when someone went to a healthcare provider for a test).
 
@@ -43,7 +43,7 @@ This file contains the number of people who received PCR test, the number of peo
 
 # Cumulative files
 
-## Groupdata_NYChealthraw_epidemiology_BOROUGT_std.csv
+## 1] Groupdata_NYChealthraw_epidemiology_BOROUGT_std.csv
 
 This file contains borough-specific daily counts of confirmed cases, hospitalizations, and deaths and rates of confirmed cases, hospitalixacions and deaths, by age group, race/ethnicity group, and sex. Rates are:
 
