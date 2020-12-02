@@ -1,4 +1,4 @@
-date,fips,county,cnt_test,cnt_positive_test,per_positive,cnt_tests_avg,cnt_positive_tests_avg,per_positive_avg
+date,fips,county,daily_tests,daily_positive_tests,daily_per_positive,daily_tests_avg,daily_positive_tests_avg,daily_per_positive_avg
 2020-03-03,99999,New York City,15,1,0.0667,,,nan
 2020-03-04,99999,New York City,33,5,0.1515,,,nan
 2020-03-05,99999,New York City,65,4,0.0615,,,nan

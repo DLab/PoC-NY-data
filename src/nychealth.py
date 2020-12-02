@@ -44,7 +44,7 @@ class Minedata:
             df = pd.read_csv(url)
             df = df.drop(['INCOMPLETE'], axis=1)
             df.columns = df.columns.str.lower()
-            df = df.rename(columns = {'total_tests':'cnt_test', 'positive_tests':'cnt_positive_test', 'percent_positive':'per_positive', 'total_tests_7days_avg':'cnt_tests_avg', 'positive_tests_7days_avg':'cnt_positive_tests_avg', 'percent_positive_7days_avg':'per_positive_avg'})
+            df = df.rename(columns = {'total_tests':'daily_tests', 'positive_tests':'daily_positive_tests', 'percent_positive':'daily_per_positive', 'total_tests_7days_avg':'daily_tests_avg', 'positive_tests_7days_avg':'daily_positive_tests_avg', 'percent_positive_7days_avg':'daily_per_positive_avg'})
             df['date'] = pd.to_datetime(df['date'].values).strftime('%Y-%m-%d')
             df['fips']=np.zeros((len(df),1))
             df['county']=['New York City']*len(df)
@@ -59,8 +59,8 @@ class Minedata:
             fip_nyc = [fips[fips['county']=='New York City'].fips.values[0]]*len(df)
             
             df['fips']=fip_nyc
-            df['per_positive'] = pd.Series(["{0:.4f}".format(val) for val in df['per_positive']], index = df.index)
-            df['per_positive_avg'] = pd.Series(["{0:.4f}".format(val) for val in df['per_positive_avg']], index = df.index)
+            df['daily_per_positive'] = pd.Series(["{0:.4f}".format(val) for val in df['daily_per_positive']], index = df.index)
+            df['daily_per_positive_avg'] = pd.Series(["{0:.4f}".format(val) for val in df['daily_per_positive_avg']], index = df.index)
             
             self.tests=df
             
@@ -217,7 +217,7 @@ if __name__== '__main__':
     data0 = Minedata() 
     data0.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv') 
     data0.CorrectFormat(source)
-    data0.writing(['../output/NYChealth/daily/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/daily/NYChealthraw_epidemiology_BOROUGT_std.csv'])
+    data0.writing(['../output/NYChealth/historical/NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/historical/NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
     ### dataset with previous information. 
     
@@ -233,7 +233,7 @@ if __name__== '__main__':
     
     data3 = Minedata()
     data3.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/tests.csv')
-    data3.WritingNYC_tests('../output/NYChealth/daily/tests_NYChealthraw_epidemiology_NYC_std.csv')
+    data3.WritingNYC_tests('../output/NYChealth/historical/tests_NYChealthraw_epidemiology_NYC_std.csv')
 
 
 
