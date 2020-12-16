@@ -69,7 +69,7 @@ class Minedata:
             df = pd.read_csv(url)
             #change of format date
             df['date_of_interest'] = pd.to_datetime(df['date_of_interest']).dt.strftime('%Y-%m-%d') 
-            df = df.drop(['INCOMPLETE','DEATH_COUNT_PROBABLE'], axis=1)
+            df = df.drop(['INCOMPLETE','PROBABLE_DEATH_COUNT','PROBABLE_CASE_COUNT'], axis=1)
         
             df.columns = df.columns.str.lower()
             df.columns = [item.replace('count', 'cnt') for item in df.columns]
@@ -222,7 +222,7 @@ if __name__== '__main__':
     ### dataset with previous information. 
     
     data1 = Minedata()
-    data1.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/9d4dc17a508b271804ca7ecea2aaca2f77b2493a/trends/data-by-day.csv')
+    data1.File('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/data-by-day.csv')
     data1.CorrectFormat(source)
     data1.writing(['../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_NYC_std.csv','../output/NYChealth/PreUpdate_NYChealthraw_epidemiology_BOROUGT_std.csv'])
 
