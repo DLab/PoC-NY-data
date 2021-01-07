@@ -273,6 +273,8 @@ class MineData:
 
         # Each line correspond to each county
 
+        self.df_total2.sort_values(['date'], inplace=True)
+
         self.df_total2.to_csv(outfile, index = False)
 
 if __name__ == '__main__':
