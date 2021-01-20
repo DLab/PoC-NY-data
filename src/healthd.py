@@ -52,7 +52,7 @@ class hospitalData:
 
         df = pd.read_csv(csv_path)
         nHosp = [len(list(group)) for key, group in groupby(df['collection_week'])]
-        print(df['address'].unique())
+        print(df['fips_code'].unique())
         print(nHosp)
 
 
