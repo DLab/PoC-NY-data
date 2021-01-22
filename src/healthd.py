@@ -52,8 +52,10 @@ class hospitalData:
 
         df = pd.read_csv(csv_path)
         nHosp = [len(list(group)) for key, group in groupby(df['collection_week'])]
-        print(df['fips_code'].unique())
-        print(nHosp)
+        ny = df.loc[df['state'] == 'NY']
+        print(len(ny['fips_code'].unique()))
+        print(len(ny['hospital_pk'].unique()))
+        #print(nHosp)
 
 
 
