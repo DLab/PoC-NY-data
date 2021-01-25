@@ -54,7 +54,8 @@ class hospitalData:
         nHosp = [len(list(group)) for key, group in groupby(df['collection_week'])]
         ny = df.loc[df['state'] == 'NY']
         print(len(ny['fips_code'].unique()))
-        print(len(ny['hospital_pk'].unique()))
+        #print(len(ny['hospital_pk'].unique()))
+        print(ny['total_beds_7_day_avg'].head(), ny['total_beds_7_day_sum'].div(7).head())
         #print(nHosp)
 
 
