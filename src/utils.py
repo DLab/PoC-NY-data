@@ -35,7 +35,30 @@ def counties(source):
 
     return county
 
-#def hospitalData(self):
+def hospitalData(df):
 
+    df2 = df[['collection_week','fips_code','county','hospital_pk',
+              'is_metro_micro','hospital_subtype',
+              'all_adult_hospital_inpatient_beds_7_day_sum',
+              'inpatient_beds_used_7_day_sum',
+              'total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_sum',
+              'total_adult_patients_hospitalized_confirmed_covid_7_day_sum','total_icu_beds_7_day_sum',
+              'icu_beds_used_7_day_sum','total_staffed_adult_icu_beds_7_day_sum',
+              'staffed_adult_icu_bed_occupancy_7_day_sum',
+              'staffed_icu_adult_patients_confirmed_and_suspected_covid_7_day_sum',
+              'staffed_icu_adult_patients_confirmed_covid_7_day_sum']].copy()
 
+    df2.rename(columns = {'collection_week': 'date', 'is_metro_micro': 'metro_micro',
+                          'fips_code': 'fips',
+                          'all_adult_hospital_inpatient_beds_7_day_sum': 'total_adult_inpatient_sum',
+                          'inpatient_beds_used_7_day_sum': 'used_inpatient_sum',
+                          'total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_sum': 'total_adult_confirmed_and_suspected_covid_sum',
+                          'total_adult_patients_hospitalized_confirmed_covid_7_day_sum': 'total_adult_confirmed_covid_sum',
+                          'total_icu_beds_7_day_sum': 'total_icu_sum',
+                          'icu_beds_used_7_day_sum': 'used_icu_sum',
+                          'total_staffed_adult_icu_beds_7_day_sum': 'total_staffed_adult_icu_sum',
+                          'staffed_adult_icu_bed_occupancy_7_day_sum': 'used_staffed_adult_icu_sum',
+                          'staffed_icu_adult_patients_confirmed_and_suspected_covid_7_day_sum': 'staffed_icu_adult_confirmed_and_suspected_covid_sum',
+                          'staffed_icu_adult_patients_confirmed_covid_7_day_sum': 'staffed_icu_adult_confirmed_covid_sum'})
 
+    return df2
