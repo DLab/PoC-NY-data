@@ -1,8 +1,9 @@
 import pandas as pd
 import sys
 import numpy as np
-import datetime
+import utils
 import re
+import math
 import requests
 from itertools import groupby
 
@@ -35,64 +36,59 @@ class hospitalData:
 
         # store used variables
         self.url = url
-        #self.output = output
         # init stuff
         self.file_name = self.url
 
         self.date = re.search("\d{8}", self.file_name).group(0)
         print(self.date)
-        #self.date = pd.to_datetime(self.date).strftime('%Y-%m-%d')
 
     def retrieveLastFileData(self):
 
-        #print(response)
         csv_path = self.url
-        #csv_path = '~/Datos-MinCiencia/notebooks/dLab/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_20210124.csv'
 
         print('reading file...')
         df = pd.read_csv(csv_path)
         print('file read')
+
         cnt_data = pd.read_csv('../input/utilities/population_NY_2019_versionJH.csv')
+        hosp_list = pd.read_csv('../input/utilities/list_hospital_NY.csv')
 
-        ny = df.loc[df['state'] == 'NY']
-        ny.sort_values('fips_code', inplace=True)
-        ny['county'] = ny['fips_code'].copy()
+        df2 = utils.hospitalData(df)
 
-        i = 0
+        ny = df2.loc[df['state'] == 'NY']
+        ny.sort_values('fips', inplace=True)
+        ny['county'] = ny['fips'].copy()
+
         for row in cnt_data['fips'].index:
-            idx = ny.loc[ny['fips_code'] == cnt_data['fips'].iloc[row]].index
+
+            idx = ny.loc[ny['fips'] == cnt_data['fips'].iloc[row]].index
             ny.loc[idx, 'county'] = cnt_data.loc[row, 'county']
 
-        ny.sort_values(by='collection_week', inplace=True)
+        self.ny_hosp = ny.sort_values(by='date')
 
-        ny_ss = ny[['collection_week', 'fips_code', 'county', 'hospital_pk', 'is_metro_micro', 'hospital_subtype',
-                    'all_adult_hospital_inpatient_beds_7_day_sum', 'inpatient_beds_used_7_day_sum',
-                    'total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_sum',
-                    'total_adult_patients_hospitalized_confirmed_covid_7_day_sum', 'total_icu_beds_7_day_sum',
-                    'icu_beds_used_7_day_sum', 'total_staffed_adult_icu_beds_7_day_sum',
-                    'staffed_adult_icu_bed_occupancy_7_day_sum',
-                    'staffed_icu_adult_patients_confirmed_and_suspected_covid_7_day_sum',
-                    'staffed_icu_adult_patients_confirmed_covid_7_day_sum']].copy()
+        for row in hosp_list['fips']:
+            idx = ny.loc[ny['fips'] == row].index
 
-        ny_ss.rename(columns={'collection_week': 'date', 'is_metro_micro': 'metro_micro', 'fips_code': 'fips',
-                              'all_adult_hospital_inpatient_beds_7_day_sum': 'total_adult_inpatient_sum',
-                              'inpatient_beds_used_7_day_sum': 'used_inpatient_sum',
-                              'total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_sum': 'total_adult_confirmed_and_suspected_covid_sum',
-                              'total_adult_patients_hospitalized_confirmed_covid_7_day_sum': 'total_adult_confirmed_covid_sum',
-                              'total_icu_beds_7_day_sum': 'total_icu_sum', 'icu_beds_used_7_day_sum': 'used_icu_sum',
-                              'total_staffed_adult_icu_beds_7_day_sum': 'total_staffed_adult_icu_sum',
-                              'staffed_adult_icu_bed_occupancy_7_day_sum': 'used_staffed_adult_icu_sum',
-                              'staffed_icu_adult_patients_confirmed_and_suspected_covid_7_day_sum': 'staffed_icu_adult_confirmed_and_suspected_covid_sum',
-                              'staffed_icu_adult_patients_confirmed_covid_7_day_sum': 'staffed_icu_adult_confirmed_covid_sum'},
-                     inplace=True)
+            if len(idx) == 0:
+                print('There is a new Hospital in the state. Please complete the file ../input/utilities/list_hospital_NY.csv')
 
 
-        #nHosp = [len(list(group)) for key, group in groupby(df['collection_week'])]
-        #ny = df.loc[df['state'] == 'NY']
-        #print(len(ny['fips_code'].unique()))
-        #print(len(ny['hospital_pk'].unique()))
-        #print(ny['total_beds_7_day_avg'].head(), ny['total_beds_7_day_sum'].div(7).head())
-        #print(nHosp)
+
+#    def groupCounty(self):
+
+#    def groupState(self):
+
+    def writeData(self, label):
+
+        if label == 'Hospital':
+            self.ny_hosp.reset_index(inplace = True)
+            self.ny_hosp.drop(columns = {'index'}, axis = 1,inplace =  True)
+
+            #self.ny_hosp.to_csv('../output/raw_hopitalData_' + label + '_NY_std.csv', float_format = '%.f', index = False)
+            self.ny_hosp.to_csv('../output/raw_hopitalData_' + label + '_NY_std.csv', index = False)
+
+
+        print('ALLES CLAAAARRRRRR')
 
 
 if __name__ == '__main__':
@@ -101,3 +97,4 @@ if __name__ == '__main__':
         my_url = sys.argv[1]
         hosp_data = hospitalData(my_url, '../output/HealthGov/HealthGovraw_hospital_NY_std.csv')
         hosp_data.retrieveLastFileData()
+        hosp_data.writeData('Hospital')

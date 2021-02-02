@@ -1,0 +1,166 @@
+fips,hospital_pk,hospital_subtype,metro_micro
+36001,330013,Short Term,True
+36001,330057,Short Term,True
+36003,330096,Short Term,False
+36003,331301,Critical Access Hospitals,False
+36005,332006,Long Term,True
+36005,330059,Short Term,True
+36005,330385,Short Term,True
+36005,330399,Short Term,True
+36005,330080,Short Term,True
+36005,330127,Short Term,True
+36005,330009,Short Term,True
+36007,330394,Short Term,True
+36007,330011,Short Term,True
+36009,330103,Short Term,True
+36011,330235,Short Term,True
+36013,330166,Short Term,True
+36013,330239,Short Term,True
+36013,330229,Short Term,True
+36015,330090,Short Term,True
+36017,330033,Short Term,False
+36019,330250,Short Term,True
+36021,330094,Short Term,True
+36023,330175,Short Term,True
+36025,331312,Critical Access Hospitals,False
+36025,331305,Critical Access Hospitals,False
+36025,331304,Critical Access Hospitals,False
+36027,330023,Short Term,True
+36027,330049,Short Term,True
+36029,3ee47674-d986-48d8-83e5-58a306cae975,Childrens Hospitals,True
+36029,330354,Short Term,True
+36029,330102,Short Term,True
+36029,330279,Short Term,True
+36029,330111,Short Term,True
+36029,330078,Short Term,True
+36029,330005,Short Term,True
+36029,330219,Short Term,True
+36031,331302,Critical Access Hospitals,False
+36033,330079,Short Term,True
+36033,330084,Short Term,True
+36035,330276,Short Term,True
+36037,330073,Short Term,True
+36043,331311,Critical Access Hospitals,True
+36045,331309,Critical Access Hospitals,True
+36045,330157,Short Term,True
+36045,331318,Critical Access Hospitals,True
+36047,330233,Short Term,True
+36047,330019,Short Term,True
+36047,330202,Short Term,True
+36047,330236,Short Term,True
+36047,330396,Short Term,True
+36047,330056,Short Term,True
+36047,330194,Short Term,True
+36047,330221,Short Term,True
+36047,330196,Short Term,True
+36047,330201,Short Term,True
+36047,330397,Short Term,True
+36047,330350,Short Term,True
+36049,331317,Critical Access Hospitals,False
+36051,330238,Short Term,True
+36053,330115,Short Term,True
+36053,331316,Critical Access Hospitals,True
+36055,330285,Short Term,True
+36055,330125,Short Term,True
+36055,330226,Short Term,True
+36055,330164,Short Term,True
+36055,330403,Short Term,True
+36057,330047,Short Term,True
+36059,330332,Short Term,True
+36059,330182,Short Term,True
+36059,330259,Short Term,True
+36059,330027,Short Term,True
+36059,330331,Short Term,True
+36059,330106,Short Term,True
+36059,330181,Short Term,True
+36059,330198,Short Term,True
+36061,330154,Short Term,True
+36061,330169,Short Term,True
+36061,330199,Short Term,True
+36061,330240,Short Term,True
+36061,330119,Short Term,True
+36061,330101,Short Term,True
+36061,332008,Long Term,True
+36061,330270,Short Term,True
+36061,330214,Short Term,True
+36061,330204,Short Term,True
+36061,330046,Short Term,True
+36061,330024,Short Term,True
+36061,330100,Short Term,True
+36063,330188,Short Term,True
+36063,330065,Short Term,True
+36063,330163,Short Term,True
+36065,330245,Short Term,True
+36065,330044,Short Term,True
+36065,330215,Short Term,True
+36067,330140,Short Term,True
+36067,330203,Short Term,True
+36067,330241,Short Term,True
+36069,330074,Short Term,True
+36069,330058,Short Term,True
+36069,330265,Short Term,True
+36071,330264,Short Term,True
+36071,330126,Short Term,True
+36071,330205,Short Term,True
+36071,330135,Short Term,True
+36073,331319,Critical Access Hospitals,True
+36075,330218,Short Term,True
+36077,330085,Short Term,True
+36077,330136,Short Term,True
+36079,330273,Short Term,True
+36081,330195,Short Term,True
+36081,330231,Short Term,True
+36081,330014,Short Term,True
+36081,330395,Short Term,True
+36081,330055,Short Term,True
+36081,330193,Short Term,True
+36081,330128,Short Term,True
+36083,330180,Short Term,True
+36083,330409,Short Term,True
+36085,330028,Short Term,True
+36085,330160,Short Term,True
+36087,330104,Short Term,True
+36087,330158,Short Term,True
+36087,330405,Short Term,True
+36089,331315,Critical Access Hospitals,True
+36089,330223,Short Term,True
+36089,330211,Short Term,True
+36089,330197,Short Term,True
+36089,331307,Critical Access Hospitals,True
+36091,330222,Short Term,True
+36093,330153,Short Term,True
+36093,330406,Short Term,True
+36095,331320,Critical Access Hospitals,True
+36097,331313,Critical Access Hospitals,False
+36101,330144,Short Term,True
+36101,330151,Short Term,True
+36101,330277,Short Term,True
+36103,330107,Short Term,True
+36103,330043,Short Term,True
+36103,330393,Short Term,True
+36103,330185,Short Term,True
+36103,330401,Short Term,True
+36103,330045,Short Term,True
+36103,330141,Short Term,True
+36103,330246,Short Term,True
+36103,330286,Short Term,True
+36105,331303,Critical Access Hospitals,False
+36105,330386,Short Term,False
+36109,330307,Short Term,True
+36111,330004,Short Term,True
+36111,331310,Critical Access Hospitals,True
+36111,330224,Short Term,True
+36113,330191,Short Term,True
+36117,330030,Short Term,True
+36119,330304,Short Term,True
+36119,330086,Short Term,True
+36119,330006,Short Term,True
+36119,330208,Short Term,True
+36119,330162,Short Term,True
+36119,330234,Short Term,True
+36119,333301,Childrens Hospitals,True
+36119,330184,Short Term,True
+36119,330267,Short Term,True
+36119,330261,Short Term,True
+36121,330008,Short Term,False
+36123,331314,Critical Access Hospitals,True
