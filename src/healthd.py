@@ -77,47 +77,66 @@ class hospitalData:
         identifiers = ['date', 'fips', 'county', 'hospital_pk']
         variables = [x for x in self.ny_hosp.columns if x not in identifiers]
 
-        self.ny_hosp[variables] = self.ny_hosp[variables].replace(-999999.0, 0.0)
-
         listDates = self.ny_hosp['date'].unique()
 
-        hosp_county = pd.DataFrame()
+        lim = [0.0, 4.0]
 
-        i = 0
-        for row in listDates:
-            aux1 = self.ny_hosp.loc[self.ny_hosp['date'] == row]
-            for code in self.cnt_data['fips']:
-                idx = aux1[variables].loc[aux1['fips'] == code].sum(axis = 0)
-                idx2 = aux1[identifiers].loc[aux1['fips'] == code]
-                if idx2.size == 0:
-                    cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
-                    date = self.ny_hosp['date'].loc[self.ny_hosp['date'] == row].copy()
-                    idx2[identifiers] = [date, code, cnt, 'NA']
-                    print(cnt)
-                if idx.size > 0:
-                    aux2 = pd.concat([idx2.iloc[0],idx], axis = 0)
-                else:
-                    aux2 = pd.DataFrame(np.zeros(1,len(variables)))
-                    aux2 = pd.concat([idx2, aux2], axis = 0)
-                if i == 0:
-                    hosp_county = aux2
-                    i += 1
-                else:
-                    hosp_county = pd.concat([hosp_county,aux2], axis = 0)
+        for n in range(2):
+            print(self.ny_hosp['staffed_icu_adult_confirmed_covid_sum'].loc[self.ny_hosp['staffed_icu_adult_confirmed_covid_sum'] == -999999.0])
+            print(lim[n])
+            self.ny_hosp2 = self.ny_hosp.replace(to_replace=-999999.0, value=lim[n],
+                                                 inplace=False, method=None)
+            if n == 0:
+                tag = 'Linf'
+            elif n == 1:
+                tag = 'Lsup'
 
-        print(hosp_county)
-        hosp_county.to_csv('../output/Hospital-Data/test.csv', index = False)
+            hosp_county_sum = pd.DataFrame()
+            hosp_county_avg = pd.DataFrame()
+
+            i = 0
+            for row in listDates:
+                aux1 = self.ny_hosp2.loc[self.ny_hosp2['date'] == row].copy()
+                for code in self.cnt_data['fips']:
+                    idx1 = aux1[variables].loc[aux1['fips'] == code].sum(axis = 0)
+                    idx2 = idx1.div(7).round(2)
+                    idx3 = aux1[identifiers].loc[aux1['fips'] == code].copy()
+                    if idx3.size == 0:
+                        cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
+                        date = self.ny_hosp2['date'].loc[self.ny_hosp2['date'] == row].copy()
+                        idx3[identifiers] = [date, code, cnt, 'NA']
+                    if idx1.size > 0:
+                        aux2 = pd.concat([idx3.iloc[0],idx1], axis = 0)
+                        aux3 = pd.concat([idx3.iloc[0],idx2], axis = 0)
+                    else:
+                        aux2 = pd.DataFrame(np.zeros(1,len(variables)))
+                        aux2 = pd.concat([idx3, aux2], axis = 0)
+
+                        aux3 = pd.DataFrame(np.zeros(1, len(variables)))
+                        aux3 = pd.concat([idx3, aux3], axis=0)
+
+                    aux4 = aux2.to_frame().T
+                    aux5 = aux3.to_frame().T
+                    if i == 0:
+                        hosp_county_sum = aux4
+                        hosp_county_avg = aux5
+                        i += 1
+                    else:
+                        hosp_county_sum = pd.concat([hosp_county_sum,aux4], axis = 0)
+                        hosp_county_avg = pd.concat([hosp_county_avg,aux5], axis = 0)
+
+            hosp_county_sum.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_sum_' + tag + '.csv', index=False)
+            hosp_county_avg.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_avg_' + tag + '.csv', index=False)
 
 #    def groupState(self):
 
     def writeData(self, label):
 
         if label == 'Hospital':
-            self.ny_hosp.reset_index(inplace = True)
-            self.ny_hosp.drop(columns = {'index'}, axis = 1,inplace =  True)
+            self.ny_hosp.reset_index(inplace=True)
+            self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
 
-            self.ny_hosp.to_csv('../output/Hospital-Data/raw_hopitalData_' + label + '_NY_std.csv', index = False)
-
+            self.ny_hosp.to_csv('../output/Hospital-Data/raw_hospitalData_' + label + '_NY_std.csv', index=False)
 
         print('ALLES CLAAAARRRRRR')
 
