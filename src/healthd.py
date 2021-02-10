@@ -79,17 +79,17 @@ class hospitalData:
 
         self.listDates = self.ny_hosp['date'].unique()
 
-        lim = [0.0, 4.0]
+        self.lim = [0.0, 4.0]
 
         for n in range(2):
-            self.ny_hosp2 = self.ny_hosp.replace(to_replace=-999999.0, value=lim[n],
+            self.ny_hosp2 = self.ny_hosp.replace(to_replace=-999999.0, value=self.lim[n],
                                                  inplace=False, method=None)
             if n == 0:
                 tag = 'Linf'
             elif n == 1:
                 tag = 'Lsup'
 
-            self.hosp_county_sum = pd.DataFrame()
+            hosp_county_sum = pd.DataFrame()
             hosp_county_avg = pd.DataFrame()
 
             i = 0
@@ -103,6 +103,9 @@ class hospitalData:
                         cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
                         date = self.ny_hosp2['date'].loc[self.ny_hosp2['date'] == row].copy()
                         idx3[identifiers] = [date, code, cnt, 'NA']
+
+                    idx3['boundary'] = self.lim[n]
+
                     if idx1.size > 0:
                         aux2 = pd.concat([idx3.iloc[0], idx1], axis=0)
                         aux3 = pd.concat([idx3.iloc[0], idx2], axis=0)
@@ -116,57 +119,77 @@ class hospitalData:
                     aux4 = aux2.to_frame().T
                     aux5 = aux3.to_frame().T
                     if i == 0:
-                        self.hosp_county_sum = aux4
+                        hosp_county_sum = aux4
                         hosp_county_avg = aux5
                         i += 1
                     else:
-                        self.hosp_county_sum = pd.concat([self.hosp_county_sum,aux4], axis=0)
+                        hosp_county_sum = pd.concat([hosp_county_sum,aux4], axis=0)
                         hosp_county_avg = pd.concat([hosp_county_avg,aux5], axis=0)
 
-            self.hosp_county_sum.drop(columns=['hospital_pk'], inplace=True)
-            hosp_county_avg.drop(columns=['hospital_pk'], inplace=True)
-            self.hosp_county_sum.reset_index(drop=True, inplace=True)
-            hosp_county_avg.reset_index(drop=True, inplace=True)
+            if n == 0:
+                self.county_sum = hosp_county_sum
+                county_avg = hosp_county_avg
+            else:
+                self.county_sum = pd.concat([self.county_sum, hosp_county_sum], axis = 0)
+                county_avg = pd.concat([county_avg, hosp_county_avg], axis = 0)
 
-            self.hosp_county_sum.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_sum_' + tag + '.csv', index=False)
-            hosp_county_avg.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_avg_' + tag + '.csv', index=False)
+        self.county_sum.drop(columns=['hospital_pk'], inplace=True)
+        county_avg.drop(columns=['hospital_pk'], inplace=True)
+        self.county_sum.reset_index(drop=True, inplace=True)
+        county_avg.reset_index(drop=True, inplace=True)
+
+        self.county_sum.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_sum.csv', index=False)
+        county_avg.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_avg.csv', index=False)
 
     def groupState(self):
 
-        identifiers = ['date', 'fips', 'county']
-        variables = [x for x in self.hosp_county_sum.columns if x not in identifiers]
+        identifiers = ['date', 'fips', 'county', 'boundary']
+        variables = [x for x in self.county_sum.columns if x not in identifiers]
 
-        self.hosp_state_sum = pd.DataFrame()
+        hosp_state_sum = pd.DataFrame()
 
-        i = 0
+        j = 0
         for row in self.listDates:
-            aux1 = self.hosp_county_sum[variables].loc[self.hosp_county_sum['date'] == row].sum(axis=0)
-            aux2 = aux1.div(7).round(2)
+            i = 0
+            for l in self.lim:
+                aux1 = self.county_sum.loc[self.county_sum['boundary'] == l]
+                aux2 = aux1[variables].loc[aux1['date'] == row].sum(axis=0)
+                aux3 = aux2.div(7).round(2)
+                idx1 = aux1[['date','boundary']].loc[aux1['date'] == row].copy()
 
-            aux3 = aux1.to_frame().T
-            aux3.reset_index(drop=True, inplace=True)
+                #print(idx1)
 
-            aux4 = aux2.to_frame().T
-            aux4.reset_index(drop=True, inplace=True)
+                idx1.reset_index(drop=True, inplace=True)
+                aux4 = pd.concat([idx1.iloc[0],aux2], axis=0)
+                aux5 = pd.concat([idx1.iloc[0],aux3], axis=0)
 
-            if i == 0:
-                self.hosp_state_sum = aux3
-                self.hosp_state_avg = aux4
-                i += 1
+                aux4 = aux4.to_frame().T
+                aux4.reset_index(drop=True, inplace=True)
+
+                aux5 = aux5.to_frame().T
+                aux5.reset_index(drop=True, inplace=True)
+
+                if i == 0:
+                    hosp_state_sum = aux4
+                    hosp_state_avg = aux5
+                    i += 1
+                else:
+                    hosp_state_sum = pd.concat([hosp_state_sum, aux4], axis=0)
+                    hosp_state_avg = pd.concat([hosp_state_avg, aux5], axis=0)
+
+            if j == 0:
+                self.state_sum = hosp_state_sum
+                self.state_avg = hosp_state_avg
+                j += 1
             else:
-                self.hosp_state_sum = pd.concat([self.hosp_state_sum, aux3], axis=0)
-                self.hosp_state_avg = pd.concat([self.hosp_state_avg, aux4], axis=0)
+                self.state_sum = pd.concat([self.state_sum, hosp_state_sum], axis=0)
+                self.state_avg = pd.concat([self.state_avg, hosp_state_avg], axis=0)
 
-        dates = pd.Series(self.listDates, name='date')
-        print(dates.shape, self.hosp_state_sum.shape)
-        self.hosp_state_sum.reset_index(drop=True, inplace=True)
-        self.hosp_state_sum = pd.concat([dates, self.hosp_state_sum], axis=1)
+        self.state_sum.sort_values(by=['boundary'], inplace=True)
+        self.state_avg.sort_values(by=['boundary'], inplace=True)
 
-        self.hosp_state_avg.reset_index(drop=True, inplace=True)
-        self.hosp_state_avg = pd.concat([dates, self.hosp_state_avg], axis=1)
-
-        self.hosp_state_sum.to_csv('../output/Hospital-Data/hospital_capacity_NY_sum_Lsup.csv', index=False)
-        self.hosp_state_avg.to_csv('../output/Hospital-Data/hospital_capacity_NY_avg_Lsup.csv', index=False)
+        self.state_sum.to_csv('../output/Hospital-Data/hospital_capacity_NY_sum.csv', index=False)
+        self.state_avg.to_csv('../output/Hospital-Data/hospital_capacity_NY_avg.csv', index=False)
 
     def writeData(self, label):
 
@@ -188,3 +211,5 @@ if __name__ == '__main__':
         hosp_data.groupCounty()
         hosp_data.groupState()
         hosp_data.writeData('Hospital')
+
+
