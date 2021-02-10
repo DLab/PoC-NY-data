@@ -1,4 +1,4 @@
-date,fips,hospital_pk,total_adult_inpatient_sum,used_inpatient_sum,total_adult_confirmed_and_suspected_covid_sum,total_adult_confirmed_covid_sum,total_icu_sum,used_icu_sum,total_staffed_adult_icu_sum,used_staffed_adult_icu_sum,staffed_icu_adult_confirmed_and_suspected_covid_sum,staffed_icu_adult_confirmed_covid_sum,county
+date,fips,hospital_pk,total_adult_inpatient,used_inpatient,total_adult_confirmed_and_suspected_covid,total_adult_confirmed_covid,total_icu,used_icu,total_staffed_adult_icu,used_staffed_adult_icu,staffed_icu_adult_confirmed_and_suspected_covid,staffed_icu_adult_confirmed_covid,county
 2020-07-31,36001,330057,3290.0,2235.0,69.0,65.0,338.0,178.0,198.0,118.0,-999999.0,-999999.0,Albany
 2020-07-31,36003,330096,371.0,172.0,4.0,-999999.0,70.0,11.0,70.0,9.0,,,Allegany
 2020-07-31,36003,331301,46.0,46.0,,,0.0,0.0,,,,,Allegany
