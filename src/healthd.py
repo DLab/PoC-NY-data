@@ -3,7 +3,6 @@ import sys
 import numpy as np
 import utils
 import re
-from itertools import groupby
 
 '''
 MIT License
@@ -29,16 +28,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-class hospitalData:
-    def __init__(self, url, output):
 
-        # store used variables
+class hospitalData:
+
+    def __init__(self, url):
+
         self.url = url
-        # init stuff
         self.file_name = self.url
 
-        self.date = re.search("\d{8}", self.file_name).group(0)
-        print(self.date)
+        date = re.search("\d{8}", self.file_name).group(0)
+        print(date)
 
     def retrieveLastFileData(self):
 
@@ -84,11 +83,6 @@ class hospitalData:
         for n in range(2):
             self.ny_hosp2 = self.ny_hosp.replace(to_replace=-999999.0, value=self.lim[n],
                                                  inplace=False, method=None)
-            if n == 0:
-                tag = 'Linf'
-            elif n == 1:
-                tag = 'Lsup'
-
             hosp_county_sum = pd.DataFrame()
             hosp_county_avg = pd.DataFrame()
 
@@ -128,18 +122,15 @@ class hospitalData:
 
             if n == 0:
                 self.county_sum = hosp_county_sum
-                county_avg = hosp_county_avg
+                self.county_avg = hosp_county_avg
             else:
-                self.county_sum = pd.concat([self.county_sum, hosp_county_sum], axis = 0)
-                county_avg = pd.concat([county_avg, hosp_county_avg], axis = 0)
+                self.county_sum = pd.concat([self.county_sum, hosp_county_sum], axis=0)
+                self.county_avg = pd.concat([self.county_avg, hosp_county_avg], axis=0)
 
         self.county_sum.drop(columns=['hospital_pk'], inplace=True)
-        county_avg.drop(columns=['hospital_pk'], inplace=True)
+        self.county_avg.drop(columns=['hospital_pk'], inplace=True)
         self.county_sum.reset_index(drop=True, inplace=True)
-        county_avg.reset_index(drop=True, inplace=True)
-
-        self.county_sum.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_sum.csv', index=False)
-        county_avg.to_csv('../output/Hospital-Data/hospital_capacity_countyNY_avg.csv', index=False)
+        self.county_avg.reset_index(drop=True, inplace=True)
 
     def groupState(self):
 
@@ -147,6 +138,7 @@ class hospitalData:
         variables = [x for x in self.county_sum.columns if x not in identifiers]
 
         hosp_state_sum = pd.DataFrame()
+        hosp_state_avg = pd.DataFrame()
 
         j = 0
         for row in self.listDates:
@@ -156,8 +148,6 @@ class hospitalData:
                 aux2 = aux1[variables].loc[aux1['date'] == row].sum(axis=0)
                 aux3 = aux2.div(7).round(2)
                 idx1 = aux1[['date','boundary']].loc[aux1['date'] == row].copy()
-
-                #print(idx1)
 
                 idx1.reset_index(drop=True, inplace=True)
                 aux4 = pd.concat([idx1.iloc[0],aux2], axis=0)
@@ -188,28 +178,33 @@ class hospitalData:
         self.state_sum.sort_values(by=['boundary'], inplace=True)
         self.state_avg.sort_values(by=['boundary'], inplace=True)
 
-        self.state_sum.to_csv('../output/Hospital-Data/hospital_capacity_NY_sum.csv', index=False)
-        self.state_avg.to_csv('../output/Hospital-Data/hospital_capacity_NY_avg.csv', index=False)
+    def writeData(self):
 
-    def writeData(self, label):
+        label = ['Hospital', 'County', 'State']
 
-        if label == 'Hospital':
-            self.ny_hosp.reset_index(inplace=True)
-            self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
+        self.ny_hosp.reset_index(inplace=True)
+        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
+        temp = list(self.ny_hosp.columns)
+        cols = temp[0:2] + [temp[-1]] + temp[2:-1]
+        self.ny_hosp = self.ny_hosp[cols]
 
-            self.ny_hosp.to_csv('../output/Hospital-Data/raw_hospitalData_' + label + '_NY_std.csv', index=False)
+        self.ny_hosp.to_csv('../output/Hospital-Data/raw_hospitalData_' + label[0] + '_NY_std.csv', index=False)
 
-        print('ALLES CLAAAARRRRRR')
+        self.county_sum.to_csv('../output/Hospital-Data/hospitalData_' + label[1] + '_NY_sum.csv', index=False)
+        self.county_avg.to_csv('../output/Hospital-Data/hospitalData_' + label[1] + '_NY_avg.csv', index=False)
+
+        self.state_sum.to_csv('../output/Hospital-Data/hospitalData_' + label[2] + '_NY_sum.csv', index=False)
+        self.state_avg.to_csv('../output/Hospital-Data/hospitalData_' + label[2] + '_NY_avg.csv', index=False)
 
 
 if __name__ == '__main__':
 
     if len(sys.argv) == 2:
         my_url = sys.argv[1]
-        hosp_data = hospitalData(my_url, '../output/HealthGov/HealthGovraw_hospital_NY_std.csv')
+        hosp_data = hospitalData(my_url)
         hosp_data.retrieveLastFileData()
         hosp_data.groupCounty()
         hosp_data.groupState()
-        hosp_data.writeData('Hospital')
+        hosp_data.writeData()
 
 
