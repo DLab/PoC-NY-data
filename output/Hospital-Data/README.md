@@ -1,27 +1,20 @@
-Johns Hopkins-data
-Standardised raw data for the State of New York. Includes Daily Infected ('cases'), deceased ('deaths'), active cases ('active) and recovered ('recovered).
+# Hospitalization data
+Standadised raw data for Hospital information of the State of New York. It includes weekly cesus of hospital beds different categories and occupancy of each category.
 
-Level of segregation
-Counties (from 2020-03-22)
+# Level of segregation
 
-Note 1: This dataset consider the City of New York as an aggregation of 5 counties: Bronx, Kings, New York, Queens, Richmond until 2020-08-30. (These counties also correspond to boroughs: Bronx, Brooklyn, Manhattan, Queens and Staten Island)
+Hospitals, Counties and State
 
-Note 2: From 2020-08-31 the source segregated New York City into its 5 counties: Bronx, Kings, New York, Queens, and Richmond.
+# Frequency:
 
-Note 3: the fips code associated to the New York City is still to be standardized. Currently is taking the code from the county of New York: 36061 until we find a solution for the conflict.
+Weekly
 
-Note 4: The file contains data up to the current day, but does not include it. The numbers in the JHraw_epidemiology_NY_std.csv file are the final counts at the end of each day and each row of data reports the cumulative number of coronavirus cases and deaths
+# Data definition by columns (NY data)
 
-Frequency:
-Daily
+- `date:` ('collection_week') It indicates the start of the period of reporting (starting Friday).
+- `fips:` County FIPS code
+- `county:` County name
+- `boundary`: When there are fewer than 4 patients in a data field, the cell is redacted and replaced with -999999.0 from origin (for annonimization purposes). This value can be found on Hospital segregation level. However, in order to add up and make averages over Counties or the State, we chose two bounding values: 0.0 as a lower limit of patients and 4.0 as an upper limit of posible patients in an annonimized data field.
 
-Data definition by columns (NY data)
-cases: Total number of cases of Covid-19, confirmed cases plus probable cases.
-deaths: Total number of deaths from Covid-19, confrimed cases plus probable cases.
-fips: County FIPS code
-county: County name
-date: Date on which data was collected.
-Source:
-https://github.com/nytimes/covid-19-data
+ For `boundary`= 0.0, all data fields originally taken as -999999.0 will be replaced with 0.0. Same logic for `boundary`= 4.0
 
-In particular: https://github.com/nytimes/covid-19-data/blob/master/us-counties.csv
