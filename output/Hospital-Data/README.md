@@ -20,8 +20,8 @@ Weekly
 - `hospital_pk:` This unique key for the given hospital that will match the Centers for Medicare & Medicaid Services 
 (CMS) Certification Number (CCN) of the given facility if it exists, otherwise, it is a derived unique key.
 
-    `boundary` field exists at County and State level only.
-- `boundary`: This is a field that exist only at County and State files. When there are fewer than 4 patients in a data 
+- `boundary` field exists at County and State level only.
+    This is a field that exist only at County and State files. When there are fewer than 4 patients in a data 
 field in the Hospitals segregated data, the cell is redacted and replaced with -999999.0 from origin (for anonymization 
 purposes). This value can be found on Hospital segregation level. However, in order to add up and make averages over 
 Counties or the State, we chose two bounding values: 0.0 as a lower limit of patients and 4.0 as an upper limit of 
