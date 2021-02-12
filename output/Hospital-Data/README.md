@@ -30,4 +30,17 @@ possible patients in an anonymized data field.
 
     For `boundary`= 0.0, all data fields originally taken as -999999.0 will be replaced with 0.0. Same logic for 
     `boundary`= 4.0
+    
+## Variables:
+
+- `total_adult_inpatient:`
+- `used_inpatient:`
+- `total_adult_confirmed_and_suspected_covid:`
+- `total_adult_confirmed_covid:`
+- `total_icu:`
+- `used_icu:`
+- `total_staffed_adult_icu:`
+- `used_staffed_adult_icu:`
+- `staffed_icu_adult_confirmed_and_suspected_covid:`
+- `staffed_icu_adult_confirmed_covid:`
 
