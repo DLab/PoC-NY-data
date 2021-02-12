@@ -17,6 +17,10 @@ Weekly
 - `date:` ('collection_week') It indicates the start of the period of reporting (starting Friday).
 - `fips:` County FIPS code
 - `county:` County name
+- `hospital_pk:` This unique key for the given hospital that will match the Centers for Medicare & Medicaid Services 
+(CMS) Certification Number (CCN) of the given facility if it exists, otherwise, it is a derived unique key.
+
+    `boundary` field exists at County and State level only.
 - `boundary`: This is a field that exist only at County and State files. When there are fewer than 4 patients in a data 
 field in the Hospitals segregated data, the cell is redacted and replaced with -999999.0 from origin (for anonymization 
 purposes). This value can be found on Hospital segregation level. However, in order to add up and make averages over 
