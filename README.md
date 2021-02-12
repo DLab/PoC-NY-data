@@ -17,5 +17,4 @@ Daily
 - `fips:` County FIPS code
 - `county:` County name
 - `date`: Date on which data was collected.
-
-
+Standadised raw data for Hospital information of the State of New York. It includes weekly cesus of hospital beds different categories and occupancy of each category.
