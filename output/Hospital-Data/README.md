@@ -11,6 +11,8 @@ Weekly
 
 # Data definition by columns (NY data)
 
+## Identifiers:
+
 - `date:` ('collection_week') It indicates the start of the period of reporting (starting Friday).
 - `fips:` County FIPS code
 - `county:` County name
