@@ -1,6 +1,6 @@
 # PoC-NY-data
-This a proof of concept of the standardised data for the State of New York. Includes cummulative Infected ('cases') and cummulative deceased ('deaths') from New York Times source. 
-From Johns Hopkins includes cummulative infected ('cases'), cummulative decesases ('deaths'), active cases ('active') and recovered ('recovered').
+This a proof of concept of the standardised data for the State of New York. Includes cumulative Infected ('cases') and cumulative deceased ('deaths') from New York Times source. 
+From Johns Hopkins includes cumulative infected ('cases'), cumulative deceases ('deaths'), active cases ('active') and recovered ('recovered').
 
 # Level of segregation
 
@@ -17,4 +17,4 @@ Daily
 - `fips:` County FIPS code
 - `county:` County name
 - `date`: Date on which data was collected.
-Standadised raw data for Hospital information of the State of New York. It includes weekly cesus of hospital beds different categories and occupancy of each category.
+
