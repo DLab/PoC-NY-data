@@ -78,7 +78,7 @@ class hospitalData:
 
         self.listDates = self.ny_hosp['date'].unique()
 
-        self.lim = [0.0, 4.0]
+        self.lim = [1.0, 4.0]
 
         for n in range(2):
             self.ny_hosp2 = self.ny_hosp.replace(to_replace=-999999.0, value=self.lim[n],
