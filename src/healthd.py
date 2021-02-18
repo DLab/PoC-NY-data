@@ -143,6 +143,7 @@ class hospitalData:
             for l in self.lim:
                 aux1 = self.county_sum.loc[self.county_sum['boundary'] == l]
                 aux2 = aux1[variables].loc[aux1['date'] == row].sum(axis=0)
+                aux2 = aux2.div(7).round(2)
                 idx1 = aux1[['date','boundary']].loc[aux1['date'] == row].copy()
 
                 idx1.reset_index(drop=True, inplace=True)
