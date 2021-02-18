@@ -1,5 +1,4 @@
 import pandas as pd
-
 outpath = '../output/JH_US/'
 cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv')
 # there are some counties without fips, but I am adding the one that should be
@@ -40,8 +39,8 @@ deaths_drop.sort_index(inplace=True)
 new_deaths = deaths_drop.diff()
 new_deaths_raw = new_deaths.copy()
 
-print('Routine to fix negative values')
 # Routine to fix negative values
+print('Routine to fix negative values')
 i = 1
 for fips in new_deaths:
     ndeaths = new_deaths[fips]
@@ -76,24 +75,33 @@ print()
 print('Done new_cases')
 
 
-mergednewcases = pd.merge(new_cases.T, cases[['fips', 'Admin2']], left_index=True, right_on='fips')
+mergednewcases = pd.merge(new_cases.T, cases[['fips', 'Admin2', 'Province_State']],  left_index=True, right_on='fips')
 mergednewcases.rename(columns={'Admin2': 'county'}, inplace=True)
 mergednewcases.fillna(0, inplace=True)
-mergednewcases_raw = pd.merge(new_cases_raw.T, cases[['fips', 'Admin2']], left_index=True, right_on='fips')
+mergednewcases_raw = pd.merge(new_cases_raw.T, cases[['fips', 'Admin2', 'Province_State']], left_index=True, right_on='fips')
 mergednewcases_raw.rename(columns={'Admin2': 'county'}, inplace=True)
 mergednewcases_raw.fillna(0, inplace=True)
-std_new_cases = pd.melt(mergednewcases, id_vars=['fips', 'county',], var_name='date', value_name='new_cases')
-std_new_cases_raw = pd.melt(mergednewcases_raw, id_vars=['fips', 'county',], var_name='date', value_name='new_cases')
+std_new_cases = pd.melt(mergednewcases, id_vars=['fips', 'county', 'Province_State'], var_name='date', value_name='new_cases')
+std_new_cases_raw = pd.melt(mergednewcases_raw, id_vars=['fips', 'county', 'Province_State'], var_name='date', value_name='new_cases')
 
-mergednew_deaths = pd.merge(new_deaths.T, cases[['fips', 'Admin2']], left_index=True, right_on='fips')
+mergednew_deaths = pd.merge(new_deaths.T, cases[['fips', 'Admin2', 'Province_State']], left_index=True, right_on='fips')
 mergednew_deaths.rename(columns={'Admin2': 'county'}, inplace=True)
 mergednew_deaths.fillna(0, inplace=True)
-mergednew_deaths_raw = pd.merge(new_deaths_raw.T, cases[['fips', 'Admin2']], left_index=True, right_on='fips')
+mergednew_deaths_raw = pd.merge(new_deaths_raw.T, cases[['fips', 'Admin2', 'Province_State']], left_index=True, right_on='fips')
 mergednew_deaths_raw.rename(columns={'Admin2': 'county'}, inplace=True)
 mergednew_deaths_raw.fillna(0, inplace=True)
-std_new_deaths = pd.melt(mergednew_deaths, id_vars=['fips', 'county',], var_name='date', value_name='new_death')
-std_new_deaths_raw = pd.melt(mergednew_deaths_raw, id_vars=['fips', 'county',], var_name='date', value_name='new_death')
+std_new_deaths = pd.melt(mergednew_deaths, id_vars=['fips', 'county', 'Province_State'], var_name='date', value_name='new_death')
+std_new_deaths_raw = pd.melt(mergednew_deaths_raw, id_vars=['fips', 'county', 'Province_State'], var_name='date', value_name='new_death')
 
+std_new_cases.rename(columns={'Province_State': 'state'}, inplace=True)
+std_new_cases_raw.rename(columns={'Province_State': 'state'}, inplace=True)
+std_new_deaths.rename(columns={'Province_State': 'state'}, inplace=True)
+std_new_deaths_raw.rename(columns={'Province_State': 'state'}, inplace=True)
+
+std_new_cases = std_new_cases[['fips', 'date', 'county', 'state', 'new_cases']]
+std_new_cases_raw = std_new_cases_raw[['fips', 'date', 'county', 'state', 'new_cases']]
+std_new_deaths = std_new_deaths[['fips', 'date', 'county', 'state', 'new_death']]
+std_new_deaths_raw = std_new_deaths_raw[['fips', 'date', 'county', 'state', 'new_death']]
 
 NYC = [36005, 36047, 36061, 36081, 36085] # you can add more fips to test 
 
@@ -121,10 +129,10 @@ out.to_csv(outpath+'JH_US_std.csv', index=False)
 
 NYC = [36005, 36047, 36061, 36081, 36085]
 NYC_df = out[out['fips'].isin(NYC)][['date', 'new_cases', 'new_death']].groupby(['date']).sum()
-NYC_df['county'] = 'NY-City (Bronx, Kings, New York, Queens and Richmond)'
+NYC_df['county'] = 'New York City'
 NYC_df = NYC_df[['county', 'new_cases', 'new_death']]
 NYC_df_raw = out_raw[out_raw['fips'].isin(NYC)][['date', 'new_cases', 'new_death']].groupby(['date']).sum()
-NYC_df_raw['county'] = 'NY-City (Bronx, Kings, New York, Queens and Richmond)'
+NYC_df_raw['county'] = 'New York City'
 NYC_df_raw = NYC_df_raw[['county', 'new_cases', 'new_death']]
 
 NYC_df_raw.to_csv(outpath+'JH_NYC_raw_std.csv', index=False)
