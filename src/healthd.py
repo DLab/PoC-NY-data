@@ -79,9 +79,8 @@ class hospitalData:
 
     def groupCounty(self):
 
-        ny_hospital = self.ny_hosp
-        #ny_hospital = utils.dataDrop(self.ny_hosp)
-        #print(ny_hospital)
+        ny_hospital = utils.dataDrop(self.ny_hosp)
+        print(ny_hospital)
 
         identifiers = ['date', 'fips', 'county', 'hospital_pk']
         variables = [x for x in ny_hospital.columns if x not in identifiers]
@@ -99,8 +98,9 @@ class hospitalData:
             for row in self.listDates:
                 aux1 = self.ny_hosp2.loc[self.ny_hosp2['date'] == row].copy()
                 for code in self.cnt_data['fips']:
-                    temp = aux1[variables].loc[aux1['fips'] == code]*7.0
+                    temp = aux1[variables].loc[aux1['fips'] == code].multiply(7.0)
                     idx1 = temp.sum(axis=0)
+                    idx1 = idx1.div(7).round(1)
                     idx3 = aux1[identifiers].loc[aux1['fips'] == code].copy()
                     if idx3.size == 0:
                         cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
