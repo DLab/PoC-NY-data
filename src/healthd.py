@@ -71,10 +71,17 @@ class hospitalData:
 
         self.ny_hosp['fips'] = self.ny_hosp['fips'].astype(int)
 
+        self.ny_hosp.reset_index(inplace=True)
+        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
+        temp = list(self.ny_hosp.columns)
+        cols = temp[0:2] + [temp[-1]] + temp[2:-1]
+        self.ny_hosp = self.ny_hosp[cols]
+
     def groupCounty(self):
 
-        ny_hospital = utils.dataDrop(self.ny_hosp)
-        print(ny_hospital)
+        ny_hospital = self.ny_hosp
+        #ny_hospital = utils.dataDrop(self.ny_hosp)
+        #print(ny_hospital)
 
         identifiers = ['date', 'fips', 'county', 'hospital_pk']
         variables = [x for x in ny_hospital.columns if x not in identifiers]
@@ -161,12 +168,6 @@ class hospitalData:
     def writeData(self):
 
         label = ['Hospital', 'County', 'State']
-
-        self.ny_hosp.reset_index(inplace=True)
-        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
-        temp = list(self.ny_hosp.columns)
-        cols = temp[0:2] + [temp[-1]] + temp[2:-1]
-        self.ny_hosp = self.ny_hosp[cols]
 
         self.ny_hosp.to_csv('../output/Hospital-Data/raw_hospitalData_' + label[0] + '_NY.csv', index=False)
 
