@@ -84,15 +84,15 @@ def hospitalData(df):
 
 def dataDrop(df):
 
-    df2 = df.drop(columns=['total_adult_inpatient_avg',
-                           'total_adult_used_inpatient_avg',
-                           'total_adult_confirmed_and_suspected_covid_avg',
-                           'total_adult_confirmed_covid_avg',
-                           'total_icu_avg',
-                           'used_icu_avg',
-                           'total_staffed_adult_icu_avg',
-                           'used_staffed_adult_icu_avg',
-                           'staffed_icu_adult_confirmed_and_suspected_covid_avg',
-                           'staffed_icu_adult_confirmed_covid_avg']).copy()
+    df2 = df.drop(columns=['total_adult_inpatient_sum',
+                           'total_adult_used_inpatient_sum',
+                           'total_adult_confirmed_and_suspected_covid_sum',
+                           'total_adult_confirmed_covid_sum',
+                           'total_icu_sum',
+                           'used_icu_sum',
+                           'total_staffed_adult_icu_sum',
+                           'used_staffed_adult_icu_sum',
+                           'staffed_icu_adult_confirmed_and_suspected_covid_sum',
+                           'staffed_icu_adult_confirmed_covid_sum']).copy()
 
     return df2

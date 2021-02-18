@@ -98,7 +98,9 @@ class hospitalData:
             for row in self.listDates:
                 aux1 = self.ny_hosp2.loc[self.ny_hosp2['date'] == row].copy()
                 for code in self.cnt_data['fips']:
-                    idx1 = aux1[variables].loc[aux1['fips'] == code].sum(axis=0)
+                    temp = aux1[variables].loc[aux1['fips'] == code].multiply(7.0)
+                    idx1 = temp.sum(axis=0)
+                    idx1 = idx1.div(7).round(1)
                     idx3 = aux1[identifiers].loc[aux1['fips'] == code].copy()
                     if idx3.size == 0:
                         cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
@@ -134,7 +136,6 @@ class hospitalData:
         variables = [x for x in self.county_sum.columns if x not in identifiers]
 
         hosp_state_sum = pd.DataFrame()
-        hosp_state_avg = pd.DataFrame()
 
         j = 0
         for row in self.listDates:
