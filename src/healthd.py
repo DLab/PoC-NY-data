@@ -67,9 +67,15 @@ class hospitalData:
             idx = ny.loc[ny['fips'] == row].index
 
             if len(idx) == 0:
-                print('There is a new Hospital in the state. Please complete the file ../input/utilities/list_hospital_NY.csv')
+                print('There is a new Hospital in the state. Please complte the file ../input/utilities/list_hospital_NY.csv')
 
         self.ny_hosp['fips'] = self.ny_hosp['fips'].astype(int)
+
+        self.ny_hosp.reset_index(inplace=True)
+        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
+        temp = list(self.ny_hosp.columns)
+        cols = temp[0:2] + [temp[-1]] + temp[2:-1]
+        self.ny_hosp = self.ny_hosp[cols]
 
     def groupCounty(self):
 
@@ -161,12 +167,6 @@ class hospitalData:
     def writeData(self):
 
         label = ['Hospital', 'County', 'State']
-
-        self.ny_hosp.reset_index(inplace=True)
-        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
-        temp = list(self.ny_hosp.columns)
-        cols = temp[0:2] + [temp[-1]] + temp[2:-1]
-        self.ny_hosp = self.ny_hosp[cols]
 
         self.ny_hosp.to_csv('../output/Hospital-Data/raw_hospitalData_' + label[0] + '_NY.csv', index=False)
 
