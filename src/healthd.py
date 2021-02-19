@@ -98,9 +98,8 @@ class hospitalData:
             for row in self.listDates:
                 aux1 = self.ny_hosp2.loc[self.ny_hosp2['date'] == row].copy()
                 for code in self.cnt_data['fips']:
-                    temp = aux1[variables].loc[aux1['fips'] == code].multiply(7.0)
+                    temp = aux1[variables].loc[aux1['fips'] == code]
                     idx1 = temp.sum(axis=0)
-                    idx1 = idx1.div(7).round(1)
                     idx3 = aux1[identifiers].loc[aux1['fips'] == code].copy()
                     if idx3.size == 0:
                         cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
@@ -143,7 +142,6 @@ class hospitalData:
             for l in self.lim:
                 aux1 = self.county_sum.loc[self.county_sum['boundary'] == l]
                 aux2 = aux1[variables].loc[aux1['date'] == row].sum(axis=0)
-                aux2 = aux2.div(7).round(2)
                 idx1 = aux1[['date','boundary']].loc[aux1['date'] == row].copy()
 
                 idx1.reset_index(drop=True, inplace=True)
