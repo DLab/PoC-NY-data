@@ -10,16 +10,16 @@ This repository includes two more levels of aggregation, county and state levels
 
 At facility level, reported elements include an append of either "_sum" or "_avg". The suffixes are:
 
-- ´_sum´: denotes the sum of the reports provided for that facility for that element during the week
+- ´_sum´: denotes the sum of all the reports provided for that facility for that element during the week
 - ´_avg´: denotes the average of the reports provided for that facility for that element during the week. This average
 is calculated from the ´_sum´ divided by the "coverage" reported in the source. If a facility does not report data for a
 given field on a given week the coverage = 0. If a facility reports data for a given field all the days of the week
 the coverage = 7. 
 
 Therefore, it is important to highlight that the sum of a given field does not necessarily represent the total. No 
-statistical analysis is applied to impute no-response.
+statistical analysis is applied to impute no-response. As consequence, the sum is not a proxy for hospital situation.
 
-At 
+
 
 # Timeline
 
