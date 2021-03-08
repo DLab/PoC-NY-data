@@ -186,6 +186,9 @@ class MineData:
 
 
                 # The dates are concatenated into a single dataframe
+
+
+                df.fillna(0.0, inplace = True)
                 aux = pd.concat([df_date, self.county, df.astype(int)], axis=1)
 
                 if k == 0:
