@@ -1,5 +1,6 @@
 import pandas as pd
-import sys
+#import sys
+import requests
 import numpy as np
 import utils
 import re
@@ -34,17 +35,19 @@ class hospitalData:
     def __init__(self, url):
 
         self.url = url
-        self.file_name = self.url
+        self.r = requests.get(url)
+        #self.file_name = self.url
 
-        date = re.search("\d{8}", self.file_name).group(0)
-        print(date)
+        #date = re.search("\d{8}", self.file_name).group(0)
+        #print(date)
 
     def retrieveLastFileData(self):
 
-        csv_path = self.url
+        #csv_path = self.url
 
         print('reading file...')
-        df = pd.read_csv(csv_path)
+        df = pd.DataFrame(self.r.json())
+        #df = pd.read_csv(csv_path)
         print('file read')
 
         self.cnt_data = pd.read_csv('../input/utilities/population_NY_2019_versionJH.csv')
@@ -52,14 +55,23 @@ class hospitalData:
 
         df2 = utils.hospitalData(df)
 
-        ny = df2.loc[df['state'] == 'NY']
+        ny = df2.loc[df['state'] == 'NY'].copy()
         ny.sort_values('fips', inplace=True)
         ny['county'] = ny['fips'].copy()
 
-        for row in self.cnt_data['fips'].index:
+        ny['fips'] = ny['fips'].astype(np.int64)
 
-            idx = ny.loc[ny['fips'] == self.cnt_data['fips'].iloc[row]].index
-            ny.loc[idx, 'county'] = self.cnt_data.loc[row, 'county']
+        ny.reset_index(drop = True, inplace = True)
+
+
+        i = 0
+        for row in self.cnt_data['fips']:
+
+            idx = ny['fips'].loc[ny['fips'] == row].index
+
+            ny.loc[idx, 'county'] = self.cnt_data.loc[i, 'county']
+
+            i += 1
 
         self.ny_hosp = ny.sort_values(by=['date', 'fips'])
 
@@ -80,7 +92,7 @@ class hospitalData:
     def groupCounty(self):
 
         ny_hospital = utils.dataDrop(self.ny_hosp)
-        print(ny_hospital)
+        #print(ny_hospital)
 
         identifiers = ['date', 'fips', 'county', 'hospital_pk']
         variables = [x for x in ny_hospital.columns if x not in identifiers]
@@ -90,7 +102,7 @@ class hospitalData:
         self.lim = [1.0, 4.0]
 
         for n in range(2):
-            self.ny_hosp2 = ny_hospital.replace(to_replace=-999999.0, value=self.lim[n],
+            self.ny_hosp2 = ny_hospital.replace(to_replace='-999999.0', value=self.lim[n],
                                                  inplace=False, method=None)
             hosp_county_sum = pd.DataFrame()
 
@@ -111,10 +123,12 @@ class hospitalData:
                     if idx1.size > 0:
                         aux2 = pd.concat([idx3.iloc[0], idx1], axis=0)
                     else:
-                        aux2 = pd.DataFrame(np.zeros(1, len(variables)))
+                        s = (1,len(variables))
+                        aux2 = pd.DataFrame(np.zeros(s))
                         aux2 = pd.concat([idx3, aux2], axis=0)
 
-                    aux4 = aux2.to_frame().T
+                    aux4 = aux2#.to_frame().T
+                    print(aux4)
                     if i == 0:
                         hosp_county_sum = aux4
                         i += 1
@@ -177,12 +191,14 @@ class hospitalData:
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 2:
-        my_url = sys.argv[1]
-        hosp_data = hospitalData(my_url)
-        hosp_data.retrieveLastFileData()
-        hosp_data.groupCounty()
-        hosp_data.groupState()
-        hosp_data.writeData()
+    #if len(sys.argv) == 2:
+    #    my_url = sys.argv[1]
+
+    my_url = 'https://healthdata.gov/resource/anag-cw7u.json?state=NY'
+    hosp_data = hospitalData(my_url)
+    hosp_data.retrieveLastFileData()
+    hosp_data.groupCounty()
+    hosp_data.groupState()
+    hosp_data.writeData()
 
 
