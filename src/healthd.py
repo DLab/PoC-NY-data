@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import numpy as np
 import utils
+from sodapy import Socrata
 import re
 
 '''
@@ -34,20 +35,16 @@ class hospitalData:
 
     def __init__(self, url):
 
-        self.url = url
-        self.r = requests.get(url)
-        #self.file_name = self.url
+        client = Socrata("healthdata.gov", None)
 
-        #date = re.search("\d{8}", self.file_name).group(0)
-        #print(date)
+        self.results = client.get("anag-cw7u", limit=160000)
+
 
     def retrieveLastFileData(self):
 
-        #csv_path = self.url
 
         print('reading file...')
-        df = pd.DataFrame(self.r.json())
-        #df = pd.read_csv(csv_path)
+        df = pd.DataFrame.from_records(self.results)
         print('file read')
 
         self.cnt_data = pd.read_csv('../input/utilities/population_NY_2019_versionJH.csv')
@@ -60,6 +57,9 @@ class hospitalData:
         ny['county'] = ny['fips'].copy()
 
         ny['fips'] = ny['fips'].astype(np.int64)
+
+        ny['date'] = pd.to_datetime(ny['date'], infer_datetime_format=True)
+        ny['date'] = pd.to_datetime(ny['date']).dt.strftime('%Y-%m-%d')
 
         ny.reset_index(drop = True, inplace = True)
 
@@ -92,7 +92,6 @@ class hospitalData:
     def groupCounty(self):
 
         ny_hospital = utils.dataDrop(self.ny_hosp)
-        #print(ny_hospital)
 
         identifiers = ['date', 'fips', 'county', 'hospital_pk']
         variables = [x for x in ny_hospital.columns if x not in identifiers]
@@ -110,35 +109,42 @@ class hospitalData:
             for row in self.listDates:
                 aux1 = self.ny_hosp2.loc[self.ny_hosp2['date'] == row].copy()
                 for code in self.cnt_data['fips']:
-                    temp = aux1[variables].loc[aux1['fips'] == code]
-                    idx1 = temp.sum(axis=0)
+                    temp = aux1[variables].loc[aux1['fips'] == code].copy()
+                    idx1 = temp.astype(float).sum(axis=0)
+                    idx1 = idx1.round(2)
                     idx3 = aux1[identifiers].loc[aux1['fips'] == code].copy()
                     if idx3.size == 0:
-                        cnt = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].item()
+                        aux6 = self.cnt_data['county'].loc[self.cnt_data['fips'] == code].copy()
+                        cnt = aux6.item()
                         date = self.ny_hosp2['date'].loc[self.ny_hosp2['date'] == row].copy()
-                        idx3[identifiers] = [date, code, cnt, 'NA']
+                        day = date.unique().item()
+                        lista = pd.DataFrame([day, code, cnt, 'NA']).T
+                        idx3[identifiers] = lista
+
 
                     idx3['boundary'] = self.lim[n]
+                    idx3.reset_index(drop=True,inplace=True)
 
                     if idx1.size > 0:
-                        aux2 = pd.concat([idx3.iloc[0], idx1], axis=0)
+                        idx1_t = idx1.to_frame().T
+                        idaux = idx3.loc[0:0,:]
+                        aux2 = pd.concat([idaux, idx1_t], axis=1)
                     else:
-                        s = (1,len(variables))
-                        aux2 = pd.DataFrame(np.zeros(s))
-                        aux2 = pd.concat([idx3, aux2], axis=0)
+                        s = np.zeros((len(idx3),len(variables)), dtype='object')
+                        aux2 = pd.DataFrame(s, columns = variables)
+                        idx3.reset_index(drop=True,inplace=True)
+                        aux2 = pd.concat([idx3, aux2], axis=1)
 
-                    aux4 = aux2#.to_frame().T
-                    print(aux4)
                     if i == 0:
-                        hosp_county_sum = aux4
+                        hosp_county_sum = aux2.copy()
                         i += 1
                     else:
-                        hosp_county_sum = pd.concat([hosp_county_sum,aux4], axis=0)
+                        hosp_county_sum = pd.concat([hosp_county_sum,aux2.copy()], axis=0)
 
             if n == 0:
-                self.county_sum = hosp_county_sum
+                self.county_sum = hosp_county_sum.copy()
             else:
-                self.county_sum = pd.concat([self.county_sum, hosp_county_sum], axis=0)
+                self.county_sum = pd.concat([self.county_sum, hosp_county_sum.copy()], axis=0)
 
         self.county_sum.drop(columns=['hospital_pk'], inplace=True)
         self.county_sum.reset_index(drop=True, inplace=True)
@@ -156,6 +162,7 @@ class hospitalData:
             for l in self.lim:
                 aux1 = self.county_sum.loc[self.county_sum['boundary'] == l]
                 aux2 = aux1[variables].loc[aux1['date'] == row].sum(axis=0)
+                aux2 = aux2.round(2)
                 idx1 = aux1[['date','boundary']].loc[aux1['date'] == row].copy()
 
                 idx1.reset_index(drop=True, inplace=True)
