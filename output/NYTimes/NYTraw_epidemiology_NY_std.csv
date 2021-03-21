@@ -22360,6 +22360,8 @@ date,fips,county,cases,deaths
 2021-03-14,36089,St. Lawrence,5797,92
 2021-03-14,99999,New York City,777418,30258
 2021-03-14,90036,Unknown,0,0
+<<<<<<< HEAD
+=======
 2021-03-15,36001,Albany,21645,339
 2021-03-15,36003,Allegany,2959,82
 2021-03-15,36007,Broome,15853,341
@@ -22478,3 +22480,4 @@ date,fips,county,cases,deaths
 2021-03-16,36089,St. Lawrence,5806,92
 2021-03-16,99999,New York City,785307,30366
 2021-03-16,90036,Unknown,0,0
+>>>>>>> main
