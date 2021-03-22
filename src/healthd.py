@@ -88,22 +88,20 @@ class hospitalData:
         cols = temp[0:2] + [temp[-1]] + temp[2:-1]
         ny_h = ny_h[cols]
 
-        #file1 = pd.read_csv('../output/Hospital-Data/raw_hospitalData_Hospital_NY.csv')
-        #temp_hosp = pd.concat([file1,ny_h], axis=0)
-        #temp_hosp.sort_values(by=['date','fips','hospital_pk'], inplace=True)
-        #print('date ',type(file1['date'].iloc[0]))
-        #print('date ',type(temp_hosp['date'].iloc[0]))
-        #print(type(file1['hospital_pk'].iloc[0]))
-        #print(type(temp_hosp['hospital_pk'].iloc[0]))
+        file1 = pd.read_csv('../output/Hospital-Data/raw_hospitalData_Hospital_NY.csv')
+        temp_hosp = pd.concat([file1,ny_h], axis=0)
+        temp_hosp.sort_values(by=['date','fips','hospital_pk'], inplace=True)
 
-        #identifiers = ['date', 'fips', 'county', 'hospital_pk']
-        #variables = [x for x in temp_hosp.columns if x not in identifiers]
-        #self.ny_hosp = temp_hosp.copy()
-        #self.ny_hosp[variables] = temp_hosp[variables].astype(float)
+        identifiers = ['date', 'fips', 'county', 'hospital_pk']
+        variables = [x for x in temp_hosp.columns if x not in identifiers]
+        self.ny_hosp = temp_hosp.copy()
+        self.ny_hosp[variables] = temp_hosp[variables].astype(float)
 
-        #a = self.ny_hosp.drop_duplicates(subset=['date','hospital_pk'],ignore_index=True)
-        #print(a)
-        self.ny_hosp = ny_h
+        self.ny_hosp.drop_duplicates(subset=['date','hospital_pk'], inplace=True)
+        #print(self.ny_hosp.head())
+        #self.ny_hosp = ny_h.copy()
+        #self.ny_hosp[variables] = self.ny_hosp[variables].astype(float)
+
 
     def groupCounty(self):
 
