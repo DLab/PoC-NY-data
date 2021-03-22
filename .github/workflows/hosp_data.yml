@@ -1,0 +1,53 @@
+name: Update_data_from_HealthData.gov_to_repo
+  
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+    #push
+  # github runners are on GMT
+    schedule:
+      - cron:  '15 19 * * MON'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "build"
+  Update_data_from_HealthData.gov_to_repo:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+      # Sets up python
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+          python-version: 3.8
+
+    # Runs a set of commands using the runners shell
+    - name: Install dependencies
+      run: |
+        date
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: querying HealthData.gov API to update our repo
+      run: |
+          cd src
+          python healthd.py
+
+
+    - uses: stefanzweifel/git-auto-commit-action@v4.1.1
+      with:
+        commit_message: "Added data from HealthData.gov to repo"
+
+        # Optional glob pattern of files which should be added to the commit
+        file_pattern: output/Hospital-Data/*.csv
+
+        # Optional local file path to the repository
+        repository: .
+
