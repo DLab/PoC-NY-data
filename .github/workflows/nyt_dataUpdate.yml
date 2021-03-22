@@ -51,3 +51,7 @@ jobs:
         # Optional local file path to the repository
         repository: .
 
+        # Optional commit user and author settings
+        commit_user_name: DLab GitHub Actions Bot
+        commit_user_email: actions@github.com
+        commit_author: DLab github bot <actions@github.com>
