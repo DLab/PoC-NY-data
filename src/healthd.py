@@ -98,6 +98,7 @@ class hospitalData:
         self.ny_hosp[variables] = temp_hosp[variables].astype(float)
 
         self.ny_hosp.drop_duplicates(subset=['date','hospital_pk'], inplace=True)
+        self.ny_hosp.sort_values(by=['date','fips','hospital_pk'], inplace=True)
         #print(self.ny_hosp.head())
         #self.ny_hosp = ny_h.copy()
         #self.ny_hosp[variables] = self.ny_hosp[variables].astype(float)
