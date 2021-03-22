@@ -46,7 +46,7 @@ jobs:
         commit_message: "Added data from Johns Hopkins to repo"
 
         # Optional glob pattern of files which should be added to the commit
-        file_pattern: output/JHopkins/*.csv
+        file_pattern: output/*/*.csv
 
         # Optional local file path to the repository
         repository: .
