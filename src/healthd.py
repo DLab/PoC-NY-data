@@ -33,11 +33,11 @@ SOFTWARE.
 
 class hospitalData:
 
-    def __init__(self, url):
+    def __init__(self):
 
         client = Socrata("healthdata.gov", None)
 
-        self.results = client.get("anag-cw7u", limit=160000)
+        self.results = client.get("anag-cw7u", limit=170000)
 
 
     def retrieveLastFileData(self):
@@ -52,42 +52,58 @@ class hospitalData:
 
         df2 = utils.hospitalData(df)
 
-        ny = df2.loc[df['state'] == 'NY'].copy()
-        ny.sort_values('fips', inplace=True)
-        ny['county'] = ny['fips'].copy()
+        temp_ny = df2.loc[df['state'] == 'NY'].copy()
+        temp_ny.sort_values('fips', inplace=True)
+        temp_ny['county'] = temp_ny['fips'].copy()
 
-        ny['fips'] = ny['fips'].astype(np.int64)
+        temp_ny['fips'] = temp_ny['fips'].astype(np.int64)
+        temp_ny['hospital_pk'] = temp_ny['hospital_pk'].astype(np.int64)
 
-        ny['date'] = pd.to_datetime(ny['date'], infer_datetime_format=True)
-        ny['date'] = pd.to_datetime(ny['date']).dt.strftime('%Y-%m-%d')
+        temp_ny['date'] = pd.to_datetime(temp_ny['date'], infer_datetime_format=True)
+        temp_ny['date'] = pd.to_datetime(temp_ny['date']).dt.strftime('%Y-%m-%d')
 
-        ny.reset_index(drop = True, inplace = True)
-
+        temp_ny.reset_index(drop = True, inplace = True)
 
         i = 0
         for row in self.cnt_data['fips']:
 
-            idx = ny['fips'].loc[ny['fips'] == row].index
+            idx = temp_ny['fips'].loc[temp_ny['fips'] == row].index
 
-            ny.loc[idx, 'county'] = self.cnt_data.loc[i, 'county']
+            temp_ny.loc[idx, 'county'] = self.cnt_data.loc[i, 'county']
 
             i += 1
 
-        self.ny_hosp = ny.sort_values(by=['date', 'fips'])
+        ny_h = temp_ny.sort_values(by=['date', 'fips'])
 
         for row in self.hosp_list['fips']:
-            idx = ny.loc[ny['fips'] == row].index
+            idx = temp_ny.loc[temp_ny['fips'] == row].index
 
             if len(idx) == 0:
                 print('There is a new Hospital in the state. Please complte the file ../input/utilities/list_hospital_NY.csv')
 
-        self.ny_hosp['fips'] = self.ny_hosp['fips'].astype(int)
+        ny_h['fips'] = ny_h['fips'].astype(int)
 
-        self.ny_hosp.reset_index(inplace=True)
-        self.ny_hosp.drop(columns={'index'}, axis=1, inplace=True)
-        temp = list(self.ny_hosp.columns)
+        ny_h.reset_index(drop=True,inplace=True)
+        temp = list(ny_h.columns)
         cols = temp[0:2] + [temp[-1]] + temp[2:-1]
-        self.ny_hosp = self.ny_hosp[cols]
+        ny_h = ny_h[cols]
+
+        #file1 = pd.read_csv('../output/Hospital-Data/raw_hospitalData_Hospital_NY.csv')
+        #temp_hosp = pd.concat([file1,ny_h], axis=0)
+        #temp_hosp.sort_values(by=['date','fips','hospital_pk'], inplace=True)
+        #print('date ',type(file1['date'].iloc[0]))
+        #print('date ',type(temp_hosp['date'].iloc[0]))
+        #print(type(file1['hospital_pk'].iloc[0]))
+        #print(type(temp_hosp['hospital_pk'].iloc[0]))
+
+        #identifiers = ['date', 'fips', 'county', 'hospital_pk']
+        #variables = [x for x in temp_hosp.columns if x not in identifiers]
+        #self.ny_hosp = temp_hosp.copy()
+        #self.ny_hosp[variables] = temp_hosp[variables].astype(float)
+
+        #a = self.ny_hosp.drop_duplicates(subset=['date','hospital_pk'],ignore_index=True)
+        #print(a)
+        self.ny_hosp = ny_h
 
     def groupCounty(self):
 
@@ -201,8 +217,7 @@ if __name__ == '__main__':
     #if len(sys.argv) == 2:
     #    my_url = sys.argv[1]
 
-    my_url = 'https://healthdata.gov/resource/anag-cw7u.json?state=NY'
-    hosp_data = hospitalData(my_url)
+    hosp_data = hospitalData()
     hosp_data.retrieveLastFileData()
     hosp_data.groupCounty()
     hosp_data.groupState()
