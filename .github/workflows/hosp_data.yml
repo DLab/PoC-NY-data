@@ -1,4 +1,4 @@
-name: Update_data_from_HealthData.gov_to_repo
+name: Update_data_from_HealthData_gov_to_repo
   
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -6,13 +6,13 @@ on:
     #push
   # github runners are on GMT
     schedule:
-      - cron:  '15 19 * * MON'
+      - cron:  '35 19 * * MON'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
   # This workflow contains a single job called "build"
-  Update_data_from_HealthData.gov_to_repo:
+  Update_data_from_HealthData_gov_to_repo:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -35,7 +35,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: querying HealthData.gov API to update our repo
+    - name: querying HealthData_gov API to update our repo
       run: |
           cd src
           python healthd.py
