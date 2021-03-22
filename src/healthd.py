@@ -37,7 +37,7 @@ class hospitalData:
 
         client = Socrata("healthdata.gov", None)
 
-        self.results = client.get("anag-cw7u", limit=170000)
+        self.results = client.get("anag-cw7u", limit=7000)
 
 
     def retrieveLastFileData(self):
@@ -99,9 +99,6 @@ class hospitalData:
 
         self.ny_hosp.drop_duplicates(subset=['date','hospital_pk'], inplace=True)
         self.ny_hosp.sort_values(by=['date','fips','hospital_pk'], inplace=True)
-        #print(self.ny_hosp.head())
-        #self.ny_hosp = ny_h.copy()
-        #self.ny_hosp[variables] = self.ny_hosp[variables].astype(float)
 
 
     def groupCounty(self):
