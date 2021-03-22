@@ -6,7 +6,7 @@ on:
     #push
   # github runners are on GMT
     schedule:
-      - cron:  '15 12 * * MON'
+      - cron:  '15 19 * * MON'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
