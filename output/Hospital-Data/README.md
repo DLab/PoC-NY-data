@@ -17,10 +17,13 @@ given field on a given week the coverage = 0. If a facility reports data for a g
 the coverage = 7. 
 
 Therefore, it is important to highlight that the sum of a given field does not necessarily represent the total. No 
-statistical analysis is applied to impute no-response. As consequence, the sum is not a proxy for hospital situation.
-
+statistical analysis is applied to impute no-response. As consequence, the sum is not a proxy for hospital situation. The sum may be for only one day of reporting or as good as 7 days of reporting. To find how many days a facility is reporting data, the "_coverage" fields in the source has to be taken into account.
 
 https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/anag-cw7u
+
+At County or State level, the suffixes are only for averages "_avg".
+
+As all facilities does not report at a regular cadence, the summation fields does not make sanse at County or State aggregation.
 
 # Timeline
 
@@ -68,3 +71,4 @@ possible patients in an anonymized data field.
 - `staffed_icu_adult_confirmed_and_suspected_covid:`
 - `staffed_icu_adult_confirmed_covid:`
 
+The description of the fields aforementioned are in the source: https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/anag-cw7u. Some names were modified for making the field names shorter. The equivalence can be found in the utils.py file in src/
