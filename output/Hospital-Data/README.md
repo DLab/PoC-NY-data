@@ -20,6 +20,7 @@ Therefore, it is important to highlight that the sum of a given field does not n
 statistical analysis is applied to impute no-response. As consequence, the sum is not a proxy for hospital situation.
 
 
+https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/anag-cw7u
 
 # Timeline
 
